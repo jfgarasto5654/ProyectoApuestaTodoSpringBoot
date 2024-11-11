@@ -7,10 +7,13 @@ package com.Ap.demo.persistencia;
 
 
 import com.Ap.demo.DAO.IPartidoDAO;
+import com.Ap.demo.DAO.IPersonaDAO;
 import com.Ap.demo.DAO.IUsuarioDAO;
 import com.Ap.demo.logica.Partido;
 import com.Ap.demo.logica.Usuario;
+import com.Ap.demo.logica.Persona;
 import jakarta.servlet.http.HttpSession;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +32,7 @@ public class ControladorRest {
     
     @GetMapping("/")
     public String indice (){
+        
         return "indice";
     }
     
@@ -36,6 +40,34 @@ public class ControladorRest {
     public String showloginpage (){
         return "InicioSesion";
     }
+    
+    @GetMapping("/CrearUsuario")
+    public String showCrearpage (){
+        return "CrearUsuario";
+    }
+    
+    @Autowired
+    private IPersonaDAO personaDAO;
+    @GetMapping("/Perfil")
+    public String showPerfil(HttpSession session, Model model) {
+    // Supongamos que en la sesión el usuario está guardado con el atributo "usuarioLogueado"
+    Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+    
+       if (usuario != null) {
+       int id = usuario.getId_usuario();
+    // Realiza la búsqueda de la persona con el id
+        Persona persona = personaDAO.findById(id).orElse(null);
+        if (persona != null) {
+            model.addAttribute("persona", persona);
+            return "perfil";
+        } else {
+            return "nada";  // Si no se encuentra la persona
+        }
+    } else {
+        return "login";  // Si el usuario no está en sesión
+     }
+    }
+
     
     @Autowired
     private IUsuarioDAO usuarioDAO;

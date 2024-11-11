@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil</title>
+    <link rel="stylesheet" href="/estilo.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito&family=Oswald:wght@600&display=swap');
+    </style>
+</head>
+<body>
+<div class="contenedor">
+   <div class="card mb-3" style="max-width: 540px;">
+      <div class="row g-0">
+         <div class="col-md-4">
+            <img src="img/usuario-negro.jpg" style="width: 400px" class="img-fluid rounded-start" alt="...">
+         </div>
+         <div class="col-md-8">
+            <div class="card-body">
+               <h5 class="card-title">Perfil</h5>
+               <p class="card-text">Nombre: <span th:text="${persona.nombre}">Nombre aquí</span></p>
+               <p class="card-text">Apellido: <span th:text="${persona.apellido}">Apellido aquí</span></p>
+               <p class="card-text">DNI: <span th:text="${persona.dni}">DNI aquí</span></p>
+               <p class="card-text">Edad: <span th:text="${persona.edad}">Edad aquí</span></p>
+               <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+</body>
+</html>

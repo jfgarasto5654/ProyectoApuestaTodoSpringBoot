@@ -16,4 +16,12 @@ public class Usuario implements Serializable{
     private String contrasenia;
     private double dinero;
     private String rol;
+
+    public int getId_usuario() {
+        return id_usuario;
+    }
+
+    
+    
+    
 }
