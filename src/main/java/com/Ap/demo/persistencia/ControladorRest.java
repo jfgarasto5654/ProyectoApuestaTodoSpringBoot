@@ -36,8 +36,9 @@ public class ControladorRest {
         return "indice";
     }
     
-    @GetMapping("/login")
+    @GetMapping("/loginget")
     public String showloginpage (){
+        
         return "InicioSesion";
     }
     
@@ -55,8 +56,10 @@ public class ControladorRest {
     
        if (usuario != null) {
        int id = usuario.getId_usuario();
-    // Realiza la búsqueda de la persona con el id
+           System.out.println("id:" + id); 
+        // Realiza la búsqueda de la persona con el id
         Persona persona = personaDAO.findById(id).orElse(null);
+        //persona.toString();
         if (persona != null) {
             model.addAttribute("persona", persona);
             return "perfil";
@@ -74,14 +77,16 @@ public class ControladorRest {
     @PostMapping("/login")
     public String login(Model m, @RequestParam("username") String username, @RequestParam("password") String password, HttpSession session) {
         Usuario u = usuarioDAO.findByUsuarioAndContrasenia(username, password);
+        u.toString();
+        u.setRol("NoRol");
         
         if (u == null){
-                //
                 return "nada";
         } else {
             session.setAttribute("userLogueado", u);
+            m.addAttribute("userLogueado", u);
+            return "indice";
         }
-        return "indice";
     }
     
      @Autowired
@@ -96,8 +101,9 @@ public class ControladorRest {
             System.out.println("--------------------");
         model.addAttribute("partido", partido);
 
-        return "apuesta"; // Esto asume que tienes un archivo apuesta.jsp en la carpeta src/main/resources/templates
+        return "apuesta"; 
     }
+    
     
     @GetMapping("/partidos")
     public String partidos (Model model){

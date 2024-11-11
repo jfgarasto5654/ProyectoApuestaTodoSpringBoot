@@ -13,10 +13,10 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item" th:if="${userLogueado == null}">
-            <a th:href="@{/Index(action='inicioSesion')}" class="nav-link">Iniciar Sesión</a>
+            <a th:href="@{/Index(action='login')}" class="nav-link">Iniciar Sesión</a>
           </li>
           <li class="nav-item" th:if="${userLogueado == null}">
-            <a th:href="@{/Index(action='newUsuarios')}" class="nav-link">Crear Usuario</a>
+            <a th:href="@{/Index(action='CrearUsuario')}" class="nav-link">Crear Usuario</a>
           </li>
           <li class="nav-item">
             <a th:href="@{/Partidos}" class="nav-link">Partidos</a>
@@ -32,7 +32,7 @@
             <a th:href="@{/ApuestasMostrar}" class="nav-link">Apuestas</a>
           </li>
           <li class="nav-item" th:if="${userLogueado != null}">
-            <a th:href="@{/Perfil}" class="nav-link">Perfil</a>
+            <a th:href="@{/perfil}" class="nav-link">Perfil</a>
           </li>
           <li class="nav-item" th:if="${userLogueado?.rol == 'ADMIN'}">
             <a th:href="@{/AdminPartidos}" class="nav-link">ADMIN</a>

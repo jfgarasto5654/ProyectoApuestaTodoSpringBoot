@@ -21,6 +21,19 @@ public class Usuario implements Serializable{
         return id_usuario;
     }
 
+    @Override
+    public String toString() {
+        return "Usuario{" + "id_usuario=" + id_usuario + ", usuario=" + usuario + ", contrasenia=" + contrasenia + ", dinero=" + dinero + ", rol=" + rol + '}';
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+    
+    
+    
+    
+
     
     
     

@@ -23,39 +23,52 @@
                         </button>
 
                         <div class="collapse navbar-collapse" id="navbarNav">
-                            <ul class="navbar-nav ms-auto">
-                                <li class="nav-item" th:if="${userLogueado == null}">
-                                    <a class="nav-link" th:href="@{/login}">Iniciar Sesión</a>
-                                </li>
-                                <li class="nav-item" th:if="${userLogueado == null}">
-                                    <a class="nav-link" th:href="@{/crear}">Crear Usuario</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/partidos}">Partidos</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/Billetera}">Billetera</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/Resultados}">Resultados</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/ApuestasMostrar}">Apuestas</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" th:href="@{/Perfil}">Perfil</a>
-                                </li>
-                                <li class="nav-item" th:if="${userLogueado != null}">
-                                    <a class="nav-link" th:href="@{/AdminPartidos}">ADMIN</a>
-                                </li>
-                                <li class="nav-item" th:if="${userLogueado != null}">
-                                    <a class="nav-link" th:href="@{/Balance}">Balance</a>
-                                </li>
-                                <li class="nav-item" th:if="${userLogueado != null}">
-                                    <a class="btn btn-danger" th:href="@{/Salir}">Logout</a>
-                                </li>
-                            </ul>
-                        </div>
+    <ul class="navbar-nav ms-auto">
+        
+        <!-- Si el usuario NO está logueado -->
+        <li class="nav-item" th:if="${userLogueado == null}">
+            <a th:href="@{/loginget(action='login')}" class="nav-link">Iniciar Sesión</a>
+        </li>
+        <li class="nav-item" th:if="${userLogueado == null}">
+            <a th:href="@{/CrearUsuario(action='CrearUsuario')}" class="nav-link">Crear Usuario</a>
+        </li>
+        
+        <!-- Partidos (Visible tanto si el usuario está logueado como si no) -->
+        <li class="nav-item">
+            <a th:href="@{/partidos}" class="nav-link">Partidos</a>
+        </li>
+
+        <!-- Si el usuario está logueado -->
+        <li class="nav-item" th:if="${userLogueado != null}">
+            <a th:href="@{/Billetera}" class="nav-link">Billetera</a>
+        </li>
+        <li class="nav-item" th:if="${userLogueado != null}">
+            <a th:href="@{/Resultados}" class="nav-link">Resultados</a>
+        </li>
+        <li class="nav-item" th:if="${userLogueado != null}">
+            <a th:href="@{/ApuestasMostrar}" class="nav-link">Apuestas</a>
+        </li>
+        <li class="nav-item" th:if="${userLogueado != null}">
+            <a th:href="@{/Perfil}" class="nav-link">Perfil</a>
+        </li>
+
+        <!-- Si el usuario tiene rol ADMIN -->
+        <!--<li class="nav-item" th:if="${userLogueado?.rol == 'ADMIN'}">
+            <a th:href="@{/AdminPartidos}" class="nav-link">ADMIN</a>
+        </li>
+        <li class="nav-item" th:if="${userLogueado?.rol == 'ADMIN'}">
+            <a th:href="@{/Balance}" class="nav-link">Balance</a>
+        </li> -->
+
+        <!-- Si el usuario está logueado, mostrar el botón de logout -->
+        <li class="nav-item" th:if="${userLogueado != null}">
+            <a th:href="@{/Salir}" class="btn btn-danger">Logout</a>
+        </li>
+
+    </ul>
+</div>
+
+    
                     </div>
                 </nav>
        <h2 id = "bets" >BETS DESTACADAS</h2>
