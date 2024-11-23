@@ -29,6 +29,12 @@ public class Usuario implements Serializable{
     public void setRol(String rol) {
         this.rol = rol;
     }
+
+    public double getDinero() {
+        return dinero;
+    }
+    
+    
     
     
     

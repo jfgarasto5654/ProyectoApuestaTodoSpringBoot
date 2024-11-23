@@ -6,9 +6,11 @@ package com.Ap.demo.persistencia;
 
 
 
+import com.Ap.demo.DAO.IApuestaDAO;
 import com.Ap.demo.DAO.IPartidoDAO;
 import com.Ap.demo.DAO.IPersonaDAO;
 import com.Ap.demo.DAO.IUsuarioDAO;
+import com.Ap.demo.logica.Apuesta;
 import com.Ap.demo.logica.Partido;
 import com.Ap.demo.logica.Usuario;
 import com.Ap.demo.logica.Persona;
@@ -62,6 +64,7 @@ public class ControladorRest {
         //persona.toString();
         if (persona != null) {
             model.addAttribute("persona", persona);
+             model.addAttribute("userLogueado", usuario);
             return "perfil";
         } else {
             return "nada";  // Si no se encuentra la persona
@@ -91,9 +94,13 @@ public class ControladorRest {
     
      @Autowired
     private IPartidoDAO partidoDAO;
+     
      @GetMapping("/Apuesta")
-    public String mostrarApuesta(@RequestParam("id") int partidoId, Model model) {
+    public String mostrarApuesta(@RequestParam("id") int partidoId, Model model, HttpSession session) {
 
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+         model.addAttribute("userLogueado", usuario);
+        usuario.toString();
         Partido partido = partidoDAO.findById(partidoId).orElse(null);
         System.out.println("Local: " + partido.getLocal());
             System.out.println("Visitante: " + partido.getVisitante());
@@ -118,5 +125,21 @@ public class ControladorRest {
         }*/
         
         return "partidosmostrar";
+    }
+    
+    @Autowired
+    private IApuestaDAO apuestaDAO;
+    
+    @PostMapping("/procesarApuesta")
+    public String procesarapuesta (Model model, @RequestParam("monto") int monto,
+            @RequestParam("por") String por,
+            @RequestParam("idPartido") int idPartido, HttpSession session){
+        
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+        int idUsuario = usuario.getId_usuario();
+        Apuesta apuesta = new Apuesta(monto,por, idUsuario,idPartido, 'P', idPartido);
+        apuestaDAO.save(apuesta);
+        
+        return "/";
     }
 }
