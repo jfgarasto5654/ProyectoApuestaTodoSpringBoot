@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html>
+    <div th:replace="../componentes/head :: head('Apuesta')"></div>
+    <body>
+    <div th:replace="../componentes/navBar-Iniciado :: navbar"></div>    
+        
+        <div class="card">               
+    <div class="card-body">
+        <h3 class="card-title">Felicitaciones, su apuesta ha sido creada</h3>
+        <h3 class="card-title">Datos del partido</h3>
+        <h5 class="card-text">
+            <span th:text="${partido.local}"></span> vs <span th:text="${partido.visitante}"></span>
+        </h5>
+        <h5 class="card-text" th:text="'Fecha del partido: ' + ${partido.fecha}"></h5>
+        <h5 class="card-text">
+            Su apuesta ha sido de $<span th:text="${apuesta.monto}"></span> por el equipo 
+            <!--<span th:text="${apuesta.por_quien}"></span>-->
+        </h5>
+        <h5 class="card-text">
+            En caso de ganar, su premio será de $<span th:text="${premio}"></span>
+        </h5>
+
+        <a style="padding: 10px" th:href="@{/Partidos}" class="btn btn-success">Seguir apostando</a>
+        <a style="padding: 10px" th:href="@{/}" class="btn btn-success">Inicio</a>
+    </div>
+                  
+    <div class="card-header">
+        Gracias por confiar en nosotros
+        <h1>Su apuesta se encontrará pendiente hasta la hora del partido</h1>
+    </div>
+</div>
+        
+        
+    </body>
+</html>

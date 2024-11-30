@@ -14,8 +14,8 @@ public class Apuesta implements Serializable{
     private int idApuesta;
     private int monto;
     private String por_quien;
-    private int idUsuario;
-    private int idPartido;
+    private int fk_id_usuario;
+    private int fk_id_partido;
     private char estado;
     private int fk_id_resultado;
 
@@ -27,21 +27,21 @@ public class Apuesta implements Serializable{
     public Apuesta(int monto, String por_quien, int idUsuario, int idPartido, int fk_id_resultado) {
         this.monto = monto;
         this.por_quien = por_quien;
-        this.idUsuario = idUsuario;
-        this.idPartido = idPartido;
+        this.fk_id_usuario = idUsuario;
+        this.fk_id_partido = idPartido;
         this.fk_id_resultado = fk_id_resultado;
     }
 
     public Apuesta(int monto, int idPartido, String local, String visitante) {
         this.monto = monto;
-        this.idPartido = idPartido;
+        this.fk_id_partido = idPartido;
     }
 
     public Apuesta(int monto, String por_quien, int idUsuario, int idPartido, char estado, int fk_id_resultado) {
         this.monto = monto;
         this.por_quien = por_quien;
-        this.idUsuario = idUsuario;
-        this.idPartido = idPartido;
+        this.fk_id_usuario = idUsuario;
+        this.fk_id_partido  = idPartido;
         this.estado = estado;
         this.fk_id_resultado = fk_id_resultado;
     }
@@ -76,11 +76,11 @@ public class Apuesta implements Serializable{
     }
 
     public int getIdUsuario() {
-        return idUsuario;
+        return fk_id_usuario;
     }
 
     public int getIdPartido() {
-        return idPartido;
+        return fk_id_partido ;
     }
 
     public void setIdApuesta(int idApuesta) {
@@ -96,13 +96,17 @@ public class Apuesta implements Serializable{
     }
 
     public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+        this.fk_id_usuario = idUsuario;
     }
 
     public void setIdPartido(int idPartido) {
-        this.idPartido = idPartido;
+        this.fk_id_partido  = idPartido;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Apuesta{" + "idApuesta=" + idApuesta + ", monto=" + monto + ", por_quien=" + por_quien + ", idUsuario=" + fk_id_usuario + ", idPartido=" + fk_id_partido  + ", estado=" + estado + ", fk_id_resultado=" + fk_id_resultado + '}';
+    }
+
 
 }

@@ -10,10 +10,12 @@ import com.Ap.demo.DAO.IApuestaDAO;
 import com.Ap.demo.DAO.IPartidoDAO;
 import com.Ap.demo.DAO.IPersonaDAO;
 import com.Ap.demo.DAO.IUsuarioDAO;
+import com.Ap.demo.DAO.IResultadoDAO;
 import com.Ap.demo.logica.Apuesta;
 import com.Ap.demo.logica.Partido;
 import com.Ap.demo.logica.Usuario;
 import com.Ap.demo.logica.Persona;
+import com.Ap.demo.logica.Resultado;
 import jakarta.servlet.http.HttpSession;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 
 
@@ -111,6 +114,23 @@ public class ControladorRest {
         return "apuesta"; 
     }
     
+    @Autowired
+    private IResultadoDAO resultadoDAO;
+    @GetMapping("/Resultados")
+    public String resultados(Model model, HttpSession session) {
+
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+         model.addAttribute("userLogueado", usuario);
+        usuario.toString();
+        
+       Iterable<Resultado> resultados = resultadoDAO.findAll();
+       Iterable<Partido> partidos = partidoDAO.findAll();
+       model.addAttribute("partidos", partidos);
+       model.addAttribute("resultados", resultados);
+
+        return "resultados"; 
+    }
+    
     
     @GetMapping("/partidos")
     public String partidos (Model model){
@@ -138,8 +158,19 @@ public class ControladorRest {
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         int idUsuario = usuario.getId_usuario();
         Apuesta apuesta = new Apuesta(monto,por, idUsuario,idPartido, 'P', idPartido);
+        apuesta.toString();
         apuestaDAO.save(apuesta);
+        model.addAttribute("apuesta", apuesta);
         
-        return "/";
+        System.out.println("el id de partido es: " + idPartido );
+        Partido partido = partidoDAO.findById(idPartido).orElse(null);
+        System.out.println(partido.toString());
+        System.out.println(apuesta.toString());
+        model.addAttribute("partido", partido);
+        int premio = apuesta.getMonto()*2;
+        model.addAttribute(premio);
+        return "apuestaCreada";
     }
+    
+    
 }

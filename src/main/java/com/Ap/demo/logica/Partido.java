@@ -36,6 +36,12 @@ public class Partido implements Serializable{
     public int getBalance() {
         return balance;
     }
+
+    @Override
+    public String toString() {
+        return "Partido{" + "id_partido=" + id_partido + ", local=" + local + ", visitante=" + visitante + ", fecha=" + fecha + ", balance=" + balance + '}';
+    }
+    
     
     
 }

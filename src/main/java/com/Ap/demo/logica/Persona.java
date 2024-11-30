@@ -17,6 +17,7 @@ public class Persona implements Serializable{
     private String apellido;
     private int edad;
     private int fk_id_usuario;
+    
 
     public String getDni() {
         return dni;
