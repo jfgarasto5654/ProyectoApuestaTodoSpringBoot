@@ -1,5 +1,6 @@
 package com.Ap.demo.logica;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,11 +15,15 @@ public class Apuesta implements Serializable{
     private int idApuesta;
     private int monto;
     private String por_quien;
-    private int fk_id_usuario;
+    @Column(name = "fk_id_usuario")
+    private int fkIdUsuario;
     private int fk_id_partido;
     private char estado;
     private int fk_id_resultado;
 
+    public Apuesta() {
+    }
+    
     public Apuesta(String local, String visitante, String fecha, int monto, String por_quien) {
         this.monto = monto;
         this.por_quien = por_quien;
@@ -27,7 +32,7 @@ public class Apuesta implements Serializable{
     public Apuesta(int monto, String por_quien, int idUsuario, int idPartido, int fk_id_resultado) {
         this.monto = monto;
         this.por_quien = por_quien;
-        this.fk_id_usuario = idUsuario;
+        this.fkIdUsuario = idUsuario;
         this.fk_id_partido = idPartido;
         this.fk_id_resultado = fk_id_resultado;
     }
@@ -40,7 +45,7 @@ public class Apuesta implements Serializable{
     public Apuesta(int monto, String por_quien, int idUsuario, int idPartido, char estado, int fk_id_resultado) {
         this.monto = monto;
         this.por_quien = por_quien;
-        this.fk_id_usuario = idUsuario;
+        this.fkIdUsuario = idUsuario;
         this.fk_id_partido  = idPartido;
         this.estado = estado;
         this.fk_id_resultado = fk_id_resultado;
@@ -67,6 +72,10 @@ public class Apuesta implements Serializable{
         return idApuesta;
     }
 
+    public void setFk_id_partido(int fk_id_partido) {
+        this.fk_id_partido = fk_id_partido;
+    }
+
     public int getMonto() {
         return monto;
     }
@@ -76,7 +85,7 @@ public class Apuesta implements Serializable{
     }
 
     public int getIdUsuario() {
-        return fk_id_usuario;
+        return fkIdUsuario;
     }
 
     public int getIdPartido() {
@@ -96,7 +105,7 @@ public class Apuesta implements Serializable{
     }
 
     public void setIdUsuario(int idUsuario) {
-        this.fk_id_usuario = idUsuario;
+        this.fkIdUsuario = idUsuario;
     }
 
     public void setIdPartido(int idPartido) {
@@ -105,7 +114,7 @@ public class Apuesta implements Serializable{
 
     @Override
     public String toString() {
-        return "Apuesta{" + "idApuesta=" + idApuesta + ", monto=" + monto + ", por_quien=" + por_quien + ", idUsuario=" + fk_id_usuario + ", idPartido=" + fk_id_partido  + ", estado=" + estado + ", fk_id_resultado=" + fk_id_resultado + '}';
+        return "Apuesta{" + "idApuesta=" + idApuesta + ", monto=" + monto + ", por_quien=" + por_quien + ", idUsuario=" + fkIdUsuario + ", idPartido=" + fk_id_partido  + ", estado=" + estado + ", fk_id_resultado=" + fk_id_resultado + '}';
     }
 
 

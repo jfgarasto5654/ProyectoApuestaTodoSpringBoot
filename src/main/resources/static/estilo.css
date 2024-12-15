@@ -1,5 +1,6 @@
 body{
-    background-image:  url("../img/blackandgold.jfif");
+    /*background-image:  url("../img/blackandgold.jfif");*/
+   background-color: #000000 !important;
    text-align: center;
    position: relative;
    padding-bottom: 15em;
@@ -44,6 +45,7 @@ body{
 .contenedor{
     display: flex;
     justify-content: center;
+    padding-top: 150px;
 }
 
 .card{

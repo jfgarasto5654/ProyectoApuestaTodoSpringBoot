@@ -1,0 +1,20 @@
+
+<html>
+    <div th:replace="../componentes/head :: head('Apuesta')"></div>
+    <body>
+        <div th:replace="../componentes/navBar-Iniciado :: navbar"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="partidos-container">
+                    <div th:each="apuesta : ${apuestas}" class="partido-burbuja">
+                        <div class="fecha" th:text="${apuesta.monto}">Monto</div>
+                        <div class="estado" th:text="${apuesta.estado}">Estado</div>
+                        <!--<div class="por-quien" th:text="'Por Quién: ' + ${apuesta.por_quien}">Por Quién</div>-->
+                        <div class="monto" th:text="'Monto: ' + ${apuesta.monto}">Monto</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
