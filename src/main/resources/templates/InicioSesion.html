@@ -22,9 +22,10 @@
                                     <div class="text-center">
                                         <img src="img/logoAP.jpg" style="width: 70px;" alt="logo">
                                         <h4 class="mt-1 mb-5 pb-1">Inicio de sesión</h4>
+                                        
                                         <!-- Condicional en Thymeleaf para mostrar el mensaje de error -->
-                                        <div class="container mt-3 p-3 bg-danger text-light" th:if="${hayError}">
-                                            <h2 th:text="${mensajeError}">Mensaje de error</h2>
+                                        <div th:if="${errorMessage}" class="error-message">
+                                            <p th:text="${errorMessage}"></p>
                                         </div>
                                     </div>
 

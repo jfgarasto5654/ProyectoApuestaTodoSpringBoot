@@ -85,12 +85,13 @@ public class ControladorRest {
     @PostMapping("/login")
     public String login(Model m, @RequestParam("username") String username, @RequestParam("password") String password, HttpSession session) {
         Usuario u = usuarioDAO.findByUsuarioAndContrasenia(username, password);
-        u.toString();
-        u.setRol("NoRol");
         
         if (u == null){
-                return "nada";
+                m.addAttribute("errorMessage", "Usuario o contraseña incorrectos.");
+                return "inicioSesion";
         } else {
+            u.toString();
+            u.setRol("NoRol");
             session.setAttribute("userLogueado", u);
             m.addAttribute("userLogueado", u);
             return "indice";
@@ -106,14 +107,24 @@ public class ControladorRest {
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
          model.addAttribute("userLogueado", usuario);
         usuario.toString();
-        Partido partido = partidoDAO.findById(partidoId).orElse(null);
+        
+        Optional<Resultado> resultado = resultadoDAO.findById(partidoId);
+        if(!resultado.isPresent()){
+         Partido partido = partidoDAO.findById(partidoId).orElse(null);
         System.out.println("Local: " + partido.getLocal());
             System.out.println("Visitante: " + partido.getVisitante());
             System.out.println("Fecha: " + partido.getFecha());
             System.out.println("--------------------");
-        model.addAttribute("partido", partido);
-
+        model.addAttribute("partido", partido);   
         return "apuesta"; 
+        } else {
+            model.addAttribute("errorMessage", "Partido finalizado");
+            int iderror = partidoId;
+            model.addAttribute("iderror", "iderror");
+            Iterable<Partido> partidos = partidoDAO.findAll();
+            model.addAttribute("partidos", partidos);
+            return "partidosmostrar"; 
+        }
     }
     
     @Autowired
@@ -172,7 +183,12 @@ public class ControladorRest {
          }
          model.addAttribute("apuestas", apuestas);
          model.addAttribute("userLogueado", usuario);
-        return "mostrarApuestas"; 
+         Iterable<Partido> partidos = partidoDAO.findAll();
+         model.addAttribute("partidos", partidos);
+         
+         apuestas.forEach(a -> System.out.println("Apuesta: " + a.getIdPartido()));
+         partidos.forEach(p -> System.out.println("Partido: " + p.getId_partido()));
+         return "mostrarApuestas"; 
     }
     
     

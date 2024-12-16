@@ -11,6 +11,14 @@
                         <div class="estado" th:text="${apuesta.estado}">Estado</div>
                         <!--<div class="por-quien" th:text="'Por Quién: ' + ${apuesta.por_quien}">Por Quién</div>-->
                         <div class="monto" th:text="'Monto: ' + ${apuesta.monto}">Monto</div>
+                        
+                        <div th:each="partido : ${partidos}" 
+                            th:if="${apuesta.fk_id_partido} == ${partido.id_partido}">
+                           <div class="equipo-local" th:text="'Local: ' + ${partido.local}">Equipo Local</div>
+                           <div class="equipo-visitante" th:text="'Visitante: ' + ${partido.visitante}">Equipo Visitante</div>
+                           <div class="fecha-partido" th:text="'Fecha: ' + ${partido.fecha}">Fecha del Partido</div>
+                       </div>
+
                     </div>
                 </div>
             </div>
