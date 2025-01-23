@@ -1,0 +1,41 @@
+<html>
+    <div th:replace="../componentes/head :: head('Editar Partido')"></div>
+
+    <body>
+        <div th:replace="../componentes/navBar-Iniciado :: navbar"></div>
+
+        <div class="center-container">
+            <div style="padding: 15px">
+                <div class="add-match-container">
+                    <h1 class="add-match-title">Detalles del Partido</h1>
+                    <p><strong>Equipo Local:</strong> <span th:text="${partido.local}">Nombre del Local</span></p>
+                    <p><strong>Equipo Visitante:</strong> <span th:text="${partido.visitante}">Nombre del Visitante</span></p>
+                    <p><strong>Fecha del Partido:</strong> <span th:text="${partido.fecha}">Fecha</span></p>
+                </div>
+            </div>
+
+            <div style="padding: 15px; margin-top: 85px">
+            <div class="add-match-container">
+                <h1 class="add-match-title">Editar Partido</h1>
+                <form action="/editarPartido" method="POST" class="add-match-form">
+            <div class="form-group">
+                
+                <input type="hidden" name="id" th:value="${partido.id_partido}" />
+                <label for="local" class="form-label">Equipo Local</label>
+                <input type="text" id="local" name="local" class="form-input" placeholder="Ingrese el equipo local" required>
+            </div>
+            <div class="form-group">
+                <label for="visitante" class="form-label">Equipo Visitante</label>
+                <input type="text" id="visitante" name="visitante" class="form-input" placeholder="Ingrese el equipo visitante" required>
+            </div>
+            <div class="form-group">
+                <label for="fecha" class="form-label">Fecha del Partido</label>
+                <input type="date" id="fecha" name="fecha" class="form-input" required>
+            </div>
+            <button type="submit" class="form-submit-button">Guardar Partido</button>
+            </form>
+            </div>
+            </div>
+        </div>
+    </body>
+</html>

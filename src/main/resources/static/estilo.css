@@ -241,3 +241,168 @@ height: 100vh;
     padding: 20px;
 }
 
+.match-management-container {
+    text-align: center;
+    background: #ffffff;
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.match-management-title {
+    font-size: 24px;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+.match-management-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.match-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.match-add-button {
+    background-color: #4caf50;
+    color: #ffffff;
+}
+
+.match-add-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.match-edit-button {
+    background-color: #ffa500;
+    color: #ffffff;
+}
+
+.match-edit-button:hover {
+    background-color: #e59400;
+    transform: scale(1.05);
+}
+
+.match-delete-button {
+    background-color: #f44336;
+    color: #ffffff;
+}
+
+.match-delete-button:hover {
+    background-color: #d32f2f;
+    transform: scale(1.05);
+}
+
+/* Contenedor principal para centrar */
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 15em); /* Ajuste según el padding del body */
+    position: relative;
+    margin-top: 5em;
+}
+
+/* Contenedor del formulario */
+.add-match-container {
+    background: #ffffff;
+    padding: 30px 50px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Título */
+.add-match-title {
+    font-size: 26px;
+    color: #000000;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f39c12;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Estilo de los campos del formulario */
+.form-group {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-size: 16px;
+    color: #333333;
+    text-align: left;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: #f39c12;
+    box-shadow: 0 0 5px rgba(243, 156, 18, 0.3);
+    outline: none;
+}
+
+/* Botón de enviar */
+.form-submit-button {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #f39c12;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.form-submit-button:hover {
+    background-color: #e67e22;
+    transform: translateY(-2px);
+}
+
+.form-submit-button:active {
+    background-color: #d35400;
+    transform: translateY(0);
+}
+
+.error-message {
+    color: #fff; /* Texto blanco para contraste */
+    background-color: #e63946; /* Rojo llamativo pero elegante */
+    border: 1px solid #d62828; /* Bordes ligeramente más oscuros */
+    border-radius: 8px; /* Bordes redondeados */
+    padding: 12px 16px; /* Espaciado interno */
+    font-size: 14px; /* Tamaño de texto legible */
+    font-weight: 600; /* Negrita para destacar */
+    text-align: center; /* Centrar el texto */
+    margin: 12px 0; /* Espaciado externo */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animación al pasar el cursor */
+}
+
+.error-message:hover {
+    transform: scale(1.02); /* Ligeramente más grande al pasar el cursor */
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+}

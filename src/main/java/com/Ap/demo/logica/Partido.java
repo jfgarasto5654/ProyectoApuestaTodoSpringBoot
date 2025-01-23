@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Entity
 public class Partido implements Serializable{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_partido;
     private String local;
     private String visitante;
@@ -40,6 +40,26 @@ public class Partido implements Serializable{
     @Override
     public String toString() {
         return "Partido{" + "id_partido=" + id_partido + ", local=" + local + ", visitante=" + visitante + ", fecha=" + fecha + ", balance=" + balance + '}';
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
+    }
+
+    public void setVisitante(String visitante) {
+        this.visitante = visitante;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public void setId_partido(int id_partido) {
+        this.id_partido = id_partido;
     }
     
     

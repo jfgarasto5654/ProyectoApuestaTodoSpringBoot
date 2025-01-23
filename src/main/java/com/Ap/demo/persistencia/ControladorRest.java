@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -40,6 +41,7 @@ public class ControladorRest {
     public String indice (HttpSession session, Model model){
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
          model.addAttribute("userLogueado", usuario);
+         
         return "indice";
     }
     
@@ -53,6 +55,86 @@ public class ControladorRest {
     public String showCrearpage (){
         return "CrearUsuario";
     }
+    
+    @GetMapping("/Admin")
+    public String admin (HttpSession session, Model model){
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+        model.addAttribute("userLogueado", usuario);             
+        return "admin";
+    }
+    
+    @GetMapping("/ShowAgregarPartido")
+    public String showagregarpartido (HttpSession session, Model model){
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+        model.addAttribute("userLogueado", usuario);             
+        return "agregarpartido";
+    }
+    
+    @GetMapping("/ShowPaginaEdicion")
+    public String showPaginaEdicion (HttpSession session, Model model, @RequestParam("id") int partidoId){
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+        model.addAttribute("userLogueado", usuario); 
+        Partido partido = partidoDAO.findById(partidoId).orElse(null);
+         model.addAttribute("partido", partido);
+        return "editarpartido";
+    }
+    
+    @GetMapping("/ShowListaEditar")
+    public String showListaEditar (HttpSession session, Model model){
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+        model.addAttribute("userLogueado", usuario);        
+        Iterable<Partido> partidos = partidoDAO.findAll();
+        model.addAttribute("partidos", partidos);
+        return "partidosmostrar_edit";
+    }
+    
+    @PostMapping("/editarPartido")
+    public String editarPartido(Model model, @RequestParam("local") String local,
+                                 @RequestParam("visitante") String visitante,
+                                 @RequestParam("fecha") String fecha, 
+                                 @RequestParam("id") int partidoId) {
+        
+        Partido partido = new Partido();
+        partido.setLocal(local);
+        partido.setVisitante(visitante);
+        partido.setFecha(fecha);
+        partido.setBalance(0);
+        partido.setId_partido(partidoId);
+
+        Iterable<Partido> partidos = partidoDAO.findAll();
+        model.addAttribute("partidos", partidos);
+        
+        partidoDAO.save(partido);
+        
+        return "partidosmostrar"; // Redirige a una página donde muestres los partidos
+    }
+    
+     @PostMapping("/agregarPartido")
+    public String agregarPartido(Model model, @RequestParam("local") String local,
+                                 @RequestParam("visitante") String visitante,
+                                 @RequestParam("fecha") String fecha) {
+        // Verifica que no se reciban valores nulos
+        if (local == null || local.isEmpty() || visitante == null || visitante.isEmpty() || fecha == null || fecha.isEmpty()) {
+            // Maneja el error si alguno de los campos está vacío
+            return "error"; // Puedes redirigir a una página de error
+        }
+
+        // Crear el objeto Partido y guardarlo
+        Partido partido = new Partido();
+        partido.setLocal(local);
+        partido.setVisitante(visitante);
+        partido.setFecha(fecha);
+        partido.setBalance(0);
+
+        partidoDAO.save(partido);
+        
+        Iterable<Partido> partidos = partidoDAO.findAll();
+        model.addAttribute("partidos", partidos);
+
+        return "partidosmostrar"; // Redirige a la página de confirmación
+    }
+    
+    
     
     @Autowired
     private IPersonaDAO personaDAO;
@@ -91,7 +173,6 @@ public class ControladorRest {
                 return "inicioSesion";
         } else {
             u.toString();
-            u.setRol("NoRol");
             session.setAttribute("userLogueado", u);
             m.addAttribute("userLogueado", u);
             return "indice";

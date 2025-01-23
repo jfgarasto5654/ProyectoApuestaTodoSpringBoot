@@ -51,15 +51,13 @@
         <li class="nav-item" th:if="${userLogueado != null}">
             <a th:href="@{/Perfil}" class="nav-link">Perfil</a>
         </li>
-
-        <!-- Si el usuario tiene rol ADMIN -->
-        <!--<li class="nav-item" th:if="${userLogueado?.rol == 'ADMIN'}">
-            <a th:href="@{/AdminPartidos}" class="nav-link">ADMIN</a>
+        
+        <li class="nav-item" th:if="${userLogueado != null and userLogueado.rol.equals('admin')}">
+        <a th:href="@{/Admin}" class="nav-link">Admin</a>
         </li>
-        <li class="nav-item" th:if="${userLogueado?.rol == 'ADMIN'}">
-            <a th:href="@{/Balance}" class="nav-link">Balance</a>
-        </li> -->
 
+
+        
         <!-- Si el usuario está logueado, mostrar el botón de logout -->
         <li class="nav-item" th:if="${userLogueado != null}">
             <a th:href="@{/Salir}" class="btn btn-danger">Logout</a>
