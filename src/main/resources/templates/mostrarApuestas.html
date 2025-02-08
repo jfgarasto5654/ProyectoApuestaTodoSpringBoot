@@ -9,7 +9,7 @@
                     <div th:each="apuesta : ${apuestas}" class="partido-burbuja">
                         <div class="fecha" th:text="${apuesta.monto}">Monto</div>
                         <div class="estado" th:text="${apuesta.estado}">Estado</div>
-                        <!--<div class="por-quien" th:text="'Por Quién: ' + ${apuesta.por_quien}">Por Quién</div>-->
+                        <div class="por-quien" th:text="'Por Quién: ' + ${apuesta.por_quien}">Por Quién</div>
                         <div class="monto" th:text="'Monto: ' + ${apuesta.monto}">Monto</div>
                         
                         <div th:each="partido : ${partidos}" 

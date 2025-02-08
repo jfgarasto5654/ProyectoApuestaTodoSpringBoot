@@ -112,6 +112,16 @@ public class Apuesta implements Serializable{
         this.fk_id_partido  = idPartido;
     }
 
+    public int getFk_id_partido() {
+        return fk_id_partido;
+    }
+
+    public String getPor_quien() {
+        return por_quien;
+    }
+    
+    
+
     @Override
     public String toString() {
         return "Apuesta{" + "idApuesta=" + idApuesta + ", monto=" + monto + ", por_quien=" + por_quien + ", idUsuario=" + fkIdUsuario + ", idPartido=" + fk_id_partido  + ", estado=" + estado + ", fk_id_resultado=" + fk_id_resultado + '}';

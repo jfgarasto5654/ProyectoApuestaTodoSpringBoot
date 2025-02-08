@@ -10,11 +10,21 @@ import java.io.Serializable;
 public class Resultado implements Serializable{
     
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id_resultado;
+    
     private String ganador;
     private int fk_id_partido;
+    
+    public Resultado() {
+    }
 
+    public Resultado(int id_resultado, String ganador, int fk_id_partido) {
+        this.id_resultado = id_resultado;
+        this.ganador = ganador;
+        this.fk_id_partido = fk_id_partido;
+    }
+
+    
     public void setIdResultado(int idResultado) {
         this.id_resultado = idResultado;
     }

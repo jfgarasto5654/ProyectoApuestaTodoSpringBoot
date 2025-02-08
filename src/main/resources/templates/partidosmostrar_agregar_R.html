@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <div th:replace="../componentes/head :: head('Página de Inicio')"></div>
+<body>
+    <div th:replace="../componentes/navBar-Iniciado :: navbar"></div>
+    
+    
+    
+                <div class="container">
+                    <div th:if="${errorMessage}" class="error-message">
+                                            <p th:text="${errorMessage}"></p>
+                                        </div>
+                    <h2 style="color: #ffffff; background-color: black; padding: 10px;">Lista de partidos</h2>
+              <div class="table-responsive">
+                  <table border="1" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Local</th>
+                            <th>Visitante</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="partido : ${partidos}">
+                            <td th:text="${partido.local}"></td>
+                            <td th:text="${partido.visitante}"></td>
+                            <td th:text="${partido.fecha}"></td>
+                            <td><a class="btn btn-success" th:href="@{/AgregarResultado(id=${partido.id_partido})}">Agregar Resultado</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+            </div>
+</body>
+</html>
+

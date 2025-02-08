@@ -16,6 +16,7 @@ public class Partido implements Serializable{
     private String visitante;
     private String fecha;
     private int balance;
+    private int activo;
 
     public int getId_partido() {
         return id_partido;
@@ -61,6 +62,20 @@ public class Partido implements Serializable{
     public void setId_partido(int id_partido) {
         this.id_partido = id_partido;
     }
+
+    public int getActivo() {
+        return activo;
+    }
+
+    public void setActivo(int activo) {
+        this.activo = activo;
+    }
+    
+    
+
+    
+    
+    
     
     
     

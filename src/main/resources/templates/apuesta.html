@@ -7,20 +7,21 @@
          <div th:replace="../componentes/navBar-Iniciado :: navbar"></div>
         
                     <div class="container" id="contenedorPrincipal">
-                <div class="row" style="background-color: #ccc414; margin-top: 50px">
-                    <div class="col-md-4" style="color: #000000; padding: 30px">
-                        <h4>Local</h4>
-                        <p th:text="${partido.local}"></p>
-                        <form action="/procesarApuesta" method="POST">
-                            <div class="form-outline mb-4">
-                                <input type="text" id="form2Example11" class="form-control" placeholder="Monto" name="monto"/>
-                                <input type="hidden" name="por" value="local">
-                                <input type="hidden" name="idPartido" th:value="${partido.id_partido}">
-                            </div>
-                            <input class="btn btn-success" type="submit" name="Enviar datos" value="Apostar">
-                        </form>
-                    </div>
-                    <div class="col-md-4 text-center" style="color: #000000; padding: 30px">
+                        <div class="row" style="background-color: #ccc414; margin-top: 50px">
+                            <div class="col-md-4" style="color: #000000; padding: 30px">
+                                <h4>Local</h4>
+                                <p th:text="${partido.local}"></p>
+                                <form action="/procesarApuesta" method="POST">
+                                 <div class="form-outline mb-4">
+                                    <input type="text" id="form2Example11" class="form-control" placeholder="Monto" name="monto"/>
+                                    <input type="hidden" name="por" value="local">
+                                    <input type="hidden" name="idPartido" th:value="${partido.id_partido}">
+                                </div>
+                                    <input class="btn btn-success" type="submit" name="Enviar datos" value="Apostar">
+                                </form>
+                           </div>
+                    
+                     <div class="col-md-4 text-center" style="color: #000000; padding: 30px">
                         <div class="container mt-3 p-3 bg-danger text-light" th:if="${hayError}">
                             <h2 th:text="${mensajeError}"></h2>
                         </div>
@@ -28,6 +29,10 @@
                         <p th:text="${partido.fecha}"></p>
                         <h2>Saldo:</h2>
                         <p> <span th:text="${userLogueado.dinero}"></span></p>
+                        
+                        <div th:if="${errorMessage}" class="error-message">
+                                            <p th:text="${errorMessage}"></p>
+                                        </div>
                     </div>
                     <div class="col-md-4" style="color: #000000; padding: 30px">
                         <h4>Visitante</h4>

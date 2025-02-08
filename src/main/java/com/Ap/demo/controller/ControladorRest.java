@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.Ap.demo.persistencia;
+package com.Ap.demo.controller;
 
 
 
@@ -37,7 +37,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ControladorRest {
           
     
-    @GetMapping("/")
+    /*@GetMapping("/")
     public String indice (HttpSession session, Model model){
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
          model.addAttribute("userLogueado", usuario);
@@ -61,9 +61,9 @@ public class ControladorRest {
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         model.addAttribute("userLogueado", usuario);             
         return "admin";
-    }
+    }*/
     
-    @GetMapping("/ShowAgregarPartido")
+    /*@GetMapping("/ShowAgregarPartido")
     public String showagregarpartido (HttpSession session, Model model){
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         model.addAttribute("userLogueado", usuario);             
@@ -79,7 +79,48 @@ public class ControladorRest {
         return "editarpartido";
     }
     
-    @GetMapping("/ShowListaEditar")
+    @GetMapping("/ShowEliminarPartido")
+    public String showEliminarPartido (HttpSession session, Model model){
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+        model.addAttribute("userLogueado", usuario); 
+        Iterable<Partido> partidos = partidoDAO.findAll();
+         model.addAttribute("partidos", partidos);
+        return "partidosmostrar_elim";
+    }*/
+    
+    
+    /*@GetMapping("/ShowAñadirResultado")
+    public String ShowAñadirResultado (HttpSession session, Model model){
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+        model.addAttribute("userLogueado", usuario); 
+        int ultimor = resultadoDAO.findLastResultadoId();
+        Iterable<Partido> partidos = partidoDAO.findPartidosDesdeId(ultimor);
+        model.addAttribute("partidos", partidos);
+        
+        return "partidosmostrar_agregar_R";
+    }
+    
+    @GetMapping("/ShowResultado")
+    public String showresultado (HttpSession session, Model model){
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+        model.addAttribute("userLogueado", usuario);             
+        return "agregarpartido";
+    }*/
+    
+    /*@GetMapping("/EliminarPartido")
+    public String eliminarPartido (HttpSession session, Model model, @RequestParam("id") int partidoId){
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+        model.addAttribute("userLogueado", usuario);
+        
+        Partido partido = partidoDAO.findById(partidoId).orElse(null);
+        partido.setBalance(partidoId);
+        partido.setFecha(fecha);
+        partido.setLocal(local);
+        partidoDAO.deleteById(partidoId);
+        return "partidosmostrar";
+    }*/
+    
+    /*@GetMapping("/ShowListaEditar")
     public String showListaEditar (HttpSession session, Model model){
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         model.addAttribute("userLogueado", usuario);        
@@ -132,11 +173,11 @@ public class ControladorRest {
         model.addAttribute("partidos", partidos);
 
         return "partidosmostrar"; // Redirige a la página de confirmación
-    }
+    }*/
     
     
     
-    @Autowired
+    /*@Autowired
     private IPersonaDAO personaDAO;
     @GetMapping("/Perfil")
     public String showPerfil(HttpSession session, Model model) {
@@ -159,10 +200,10 @@ public class ControladorRest {
     } else {
         return "login";  // Si el usuario no está en sesión
      }
-    }
+    }*/
 
     
-    @Autowired
+    /*@Autowired
     private IUsuarioDAO usuarioDAO;
     @PostMapping("/login")
     public String login(Model m, @RequestParam("username") String username, @RequestParam("password") String password, HttpSession session) {
@@ -177,12 +218,12 @@ public class ControladorRest {
             m.addAttribute("userLogueado", u);
             return "indice";
         }
-    }
+    }*/
     
-     @Autowired
+    @Autowired
     private IPartidoDAO partidoDAO;
      
-     @GetMapping("/Apuesta")
+     /*@GetMapping("/Apuesta")
     public String mostrarApuesta(@RequestParam("id") int partidoId, Model model, HttpSession session) {
 
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
@@ -206,9 +247,9 @@ public class ControladorRest {
             model.addAttribute("partidos", partidos);
             return "partidosmostrar"; 
         }
-    }
+    }*/
     
-    @Autowired
+    /*@Autowired
     private IResultadoDAO resultadoDAO;
     @GetMapping("/Resultados")
     public String resultados(Model model, HttpSession session) {
@@ -223,9 +264,9 @@ public class ControladorRest {
        model.addAttribute("resultados", resultados);
 
         return "resultados"; 
-    }
+    }*/
     
-    @GetMapping("/ApuestasUsuario")
+    /*@GetMapping("/ApuestasUsuario")
     public String apuestasUsuario(Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
      
@@ -270,10 +311,10 @@ public class ControladorRest {
          apuestas.forEach(a -> System.out.println("Apuesta: " + a.getIdPartido()));
          partidos.forEach(p -> System.out.println("Partido: " + p.getId_partido()));
          return "mostrarApuestas"; 
-    }
+    }*/
     
     
-    @GetMapping("/partidos")
+    /*@GetMapping("/partidos")
     public String partidos (Model model){
         Iterable<Partido> partidos = partidoDAO.findAll();
         model.addAttribute("partidos", partidos);
@@ -283,12 +324,12 @@ public class ControladorRest {
             System.out.println("Visitante: " + partido.getVisitante());
             System.out.println("Fecha: " + partido.getFecha());
             System.out.println("--------------------");
-        }*/
+        }
         
         return "partidosmostrar";
-    }
+    }*/
     
-    @Autowired
+    /*@Autowired
     private IApuestaDAO apuestaDAO;
     
     @PostMapping("/procesarApuesta")
@@ -324,7 +365,7 @@ public class ControladorRest {
         
         
         return "apuestaCreada";
-    }
+    }*/
     
     
 }
