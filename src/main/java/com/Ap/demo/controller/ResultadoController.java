@@ -29,6 +29,7 @@ public class ResultadoController {
     @Autowired
     private IPartidoDAO partidoDAO;
     
+    
     @GetMapping("/Resultados")
     public String resultados(Model model, HttpSession session) {
 
@@ -101,10 +102,13 @@ public class ResultadoController {
     public String agregarResultado(
             @RequestParam("id") int idPartido, 
             @RequestParam("ganador") String ganador, 
-            Model model) {
+            Model model, HttpSession session) {
             System.out.println(ganador);
             Resultado resultado = new Resultado (idPartido, ganador, idPartido);
             resultadoDAO.save(resultado);
+            
+            Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+            model.addAttribute("userLogueado", usuario);
             
             Iterable<Resultado> resultados = resultadoDAO.findAll();
        

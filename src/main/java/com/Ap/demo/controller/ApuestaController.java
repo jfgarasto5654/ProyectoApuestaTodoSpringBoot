@@ -39,7 +39,12 @@ public class ApuestaController {
 
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         model.addAttribute("userLogueado", usuario);
-        usuario.toString();
+        if(usuario == null){
+        model.addAttribute("errorMessage", "Inicie sesion para apostar");
+        Iterable<Partido> partidos = partidoDAO.findAll();
+        model.addAttribute("partidos", partidos);
+        return "partidosmostrar"; 
+        }
         
         Optional<Resultado> resultado = resultadoDAO.findById(partidoId);
         if(!resultado.isPresent()){
@@ -149,6 +154,7 @@ public class ApuestaController {
         
         usuario.setDinero(usuario.getDinero()- monto);
         usuarioDAO.save(usuario);
+        model.addAttribute("userlogueado", usuario);
         
         return "apuestaCreada";
         }

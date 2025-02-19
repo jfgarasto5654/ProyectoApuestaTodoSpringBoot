@@ -85,10 +85,9 @@ body{
     justify-content: center;
     text-align: center;
     margin-top: 60px;
-    color: black;
+    color: white;
     margin-left: 500px;
     margin-right: 500px;
-    background-color: #ccc414;
     font-family: 'Oswald', sans-serif;
 }
 
@@ -191,30 +190,29 @@ height: 100vh;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    color: black;
+    /*color: black;*/
     margin: 50px;
 }
-.partido-burbuja {
-    background-image: url('../img/202895-plain-yellow-and-white-background-graphic.jpg');
-    background-size: cover; /* Escalar la imagen para cubrir todo el contenedor */
-    background-position: center; /* Centrar la imagen */
-    background-repeat: no-repeat; /* Evitar la repetición de la imagen */
-    border: 2px solid #333;
-    padding: 10px;
-    text-align: center;
-    margin: 10px; 
-    border-radius: 10px;
-    width: calc(33.33% - 20px);
-    box-sizing: border-box;
+
+.equipo-local {
+    color: #000000;
 }
 
-.equipo-local, .equipo-visitante {
-    font-weight: bold;
+.equipo-visitante {
+    color: #000000;
 }
 
 .fecha {
-    color: darkgreen;
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: normal;
 }
+
+.ganador {
+    color: #28a745;
+    font-weight: bold;
+}
+
 .btn-navbar {
   background-color: #999999; /* Código de color naranja como ejemplo */
   color: black; /* Color de texto */
@@ -406,3 +404,87 @@ height: 100vh;
     transform: scale(1.02); /* Ligeramente más grande al pasar el cursor */
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
 }
+
+.partido-burbuja {
+    display: flex;
+    align-items: center;
+    background-color: #454d55; /* Fondo gris claro */
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-bottom: 10px; /* Espacio entre partidos */
+    border-left: 5px solid #007bff; /* Línea de color en el borde izquierdo */
+    width: 100%; /* Que ocupe todo el ancho */
+}
+
+.partido-burbuja > div {
+    margin-right: 15px; /* Espaciado entre elementos */
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Contenedor de la tabla */
+.table-container {
+    background-color: #454d55;
+    padding: 10px;
+    border-radius: 10px;
+
+    margin-top: 20px;
+}
+
+/* Estilos para la tabla */
+.table {
+    text-align: center;
+    border-collapse: collapse; /* Evita bordes dobles */
+}
+
+/* Bordes más finos */
+.table-bordered {
+    border: 1px solid #dee2e6; /* Grosor más delgado */
+}
+
+/* Ajustar bordes de las celdas */
+.table-bordered th, 
+.table-bordered td {
+    border: 1px solid #444; /* Bordes más finos y oscuros */
+    padding: 8px; /* Menos espacio interno para reducir el efecto de grosor */
+}
+
+/* Encabezados de la tabla */
+.table th {
+    background-color: #454d55 !important; /* Negro Bootstrap */
+    color: white !important;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Celdas de la tabla */
+.table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px; /* Espaciado interno */
+}
+
+/* Mensaje de error */
+.error-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Estilo del título */
+.table-title {
+    text-align: center;
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+/* Botón de apostar */
+.btn-apostar {
+    font-size: 14px;
+    padding: 5px 10px;
+}
+

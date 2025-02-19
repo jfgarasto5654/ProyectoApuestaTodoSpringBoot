@@ -53,6 +53,36 @@ public class UsuarioController {
         return "admin";
     }
     
+    @GetMapping("/Billetera")
+    public String billetera (HttpSession session, Model model){
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+        model.addAttribute("userLogueado", usuario);
+        double dinero = usuario.getDinero();
+        model.addAttribute("dinero", dinero);
+        return "billetera";
+    }
+    
+    @PostMapping("/Billetera")
+    public String billeteras (HttpSession session, @RequestParam("monto") Double monto,
+            @RequestParam("Modificar") String modificar,
+            Model model){
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+        model.addAttribute("userLogueado", usuario);
+        
+        if(modificar.equals("retiro")){
+            usuario.setDinero(usuario.getDinero() - monto);
+        }
+        else if (modificar.equals("ingreso")){
+            usuario.setDinero(usuario.getDinero() + monto);
+        }
+        
+        usuarioDAO.save(usuario);
+        
+        double dinero = usuario.getDinero();
+        model.addAttribute("dinero", dinero);
+        return "billetera";
+    }
+    
     @GetMapping("/Perfil")
     public String showPerfil(HttpSession session, Model model) {
     // Supongamos que en la sesión el usuario está guardado con el atributo "usuarioLogueado"
@@ -89,6 +119,12 @@ public class UsuarioController {
             m.addAttribute("userLogueado", u);
             return "indice";
         }
+    }
+    
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // Invalida la sesión actual
+        return "indice";
     }
     
 }
