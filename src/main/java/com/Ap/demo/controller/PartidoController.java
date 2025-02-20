@@ -82,7 +82,7 @@ public class PartidoController {
         partido.setLocal(local);
         partido.setVisitante(visitante);
         partido.setFecha(fecha);
-        partido.setBalance(0);
+        partido.setBalance(1);
         partido.setId_partido(partidoId);
 
         Iterable<Partido> partidos = partidoDAO.findAll();

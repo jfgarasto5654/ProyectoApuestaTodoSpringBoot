@@ -69,18 +69,34 @@ public class UsuarioController {
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         model.addAttribute("userLogueado", usuario);
         
-        if(modificar.equals("retiro")){
-            usuario.setDinero(usuario.getDinero() - monto);
-        }
-        else if (modificar.equals("ingreso")){
-            usuario.setDinero(usuario.getDinero() + monto);
+        if(monto<0){
+            double dinero = usuario.getDinero();
+            model.addAttribute("dinero", dinero);
+            model.addAttribute("error", "la cantidad no puede ser menor a 0");
+            return "billetera";
         }
         
-        usuarioDAO.save(usuario);
+                if(modificar.equals("retiro")){
+                    
+                if (monto > usuario.getDinero()){
+                        double dinero = usuario.getDinero();
+                        model.addAttribute("dinero", dinero);
+                        model.addAttribute("error", "el monto ingresado es mayor a su saldo");
+                        return "billetera";
+                } else {
+                    usuario.setDinero(usuario.getDinero() - monto);
+                }
+            }
+                else if (modificar.equals("ingreso")){
+                usuario.setDinero(usuario.getDinero() + monto);
+            }
+         
+                usuarioDAO.save(usuario);
         
-        double dinero = usuario.getDinero();
-        model.addAttribute("dinero", dinero);
-        return "billetera";
+                double dinero = usuario.getDinero();
+                model.addAttribute("dinero", dinero);
+                return "billetera";
+        
     }
     
     @GetMapping("/Perfil")

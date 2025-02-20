@@ -387,7 +387,7 @@ height: 100vh;
 }
 
 .error-message {
-    color: #fff; /* Texto blanco para contraste */
+    color: #ffffff; /* Texto blanco para contraste */
     background-color: #e63946; /* Rojo llamativo pero elegante */
     border: 1px solid #d62828; /* Bordes ligeramente más oscuros */
     border-radius: 8px; /* Bordes redondeados */
@@ -403,6 +403,7 @@ height: 100vh;
 .error-message:hover {
     transform: scale(1.02); /* Ligeramente más grande al pasar el cursor */
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+    color: #ffffff;
 }
 
 .partido-burbuja {

@@ -32,11 +32,9 @@ public class AdminFilter implements Filter {
             return;
         }
 
-        // 🔹 Obtener el rol desde la sesión
-        String role = usuario.getRol();
 
         // 🚨 Bloquear si la ruta es "/Admin" y el usuario no es ADMIN
-        if (req.getRequestURI().equalsIgnoreCase("/Admin") && !role.equals("admin")) {
+        if (req.getRequestURI().equalsIgnoreCase("/Admin") && !(usuario.getRol()).equals("admin")) {
             res.setStatus(HttpServletResponse.SC_FORBIDDEN);
             res.getWriter().write("🚫 Acceso denegado: Solo administradores pueden entrar aquí.");
             return;
