@@ -137,10 +137,45 @@ public class UsuarioController {
         }
     }
     
+    @GetMapping("/showcrear")
+     
+     public String chowcrear (HttpSession session, Model model){
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+        model.addAttribute("userLogueado", usuario);
+         
+        return "crearUser";
+    }
+    
+    @PostMapping("/crearUser")
+    public String crearUser(Model m, @RequestParam String username, 
+                                   @RequestParam String nombre, 
+                                   @RequestParam String apellido, 
+                                   @RequestParam int edad, 
+                                   @RequestParam String dni, 
+                                   @RequestParam String password,
+                                   @RequestParam String reppassword, HttpSession session) {
+        
+        if (!password.equals(reppassword)){
+                m.addAttribute("errorMessage", "las contraseñas no coinciden");
+                return "crearUser";
+        } else if (edad<18){
+                m.addAttribute("errorMessage", "La edad debe ser mayor a 18 años");
+                return "crearUser";
+        }
+        
+        Usuario usuario = new Usuario(username, password, 0, "norol");
+        usuarioDAO.save(usuario);
+       
+        Persona persona = new Persona(dni,nombre,apellido,edad,usuarioDAO.findLastUsuarioId());
+        personaDAO.save(persona);
+        m.addAttribute("goodcreate", "cuenta creada con exito");
+        m.addAttribute("userLogueado", usuario);
+        session.setAttribute("userLogueado", usuario);
+            return "indice";
+        }
+    
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // Invalida la sesión actual
         return "indice";
-    }
-    
-}
+    }}

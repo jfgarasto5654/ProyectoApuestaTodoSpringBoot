@@ -14,6 +14,7 @@ import com.Ap.demo.logica.Partido;
 import com.Ap.demo.logica.Resultado;
 import com.Ap.demo.logica.Usuario;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,20 @@ public class ApuestaController {
      @Autowired
      private IApuestaDAO apuestaDAO;
      
+     public Usuario obtenerSesion (HttpSession session){
+         Usuario usuario = (Usuario) session.getAttribute("userLogueado");         
+         return usuario;
+     }
+     
+     public List<Partido> obtenerPartidosActivos(Iterable<Partido> partidos){
+         List<Partido> partidosActivos = new ArrayList<>();
+         for (Partido partidoact : partidos) {
+                if (partidoact.getActivo() == 1 && partidoact.getId_partido() > 1) {
+                    partidosActivos.add(partidoact);
+                    }
+                }
+         return partidosActivos;
+     }
 
      @GetMapping("/Apuesta")
      public String mostrarApuesta(@RequestParam("id") int partidoId, Model model, HttpSession session) {
@@ -42,7 +57,12 @@ public class ApuestaController {
         if(usuario == null){
         model.addAttribute("errorMessage", "Inicie sesion para apostar");
         Iterable<Partido> partidos = partidoDAO.findAll();
-        model.addAttribute("partidos", partidos);
+        
+        List<Partido> partidosActivos = new ArrayList<>();
+        
+        partidosActivos = obtenerPartidosActivos(partidos);
+        
+        model.addAttribute("partidos", partidosActivos);
         return "partidosmostrar"; 
         }
         
@@ -105,7 +125,11 @@ public class ApuestaController {
          model.addAttribute("apuestas", apuestas);
          model.addAttribute("userLogueado", usuario);
          Iterable<Partido> partidos = partidoDAO.findAll();
-         model.addAttribute("partidos", partidos);
+         
+         List<Partido> partidosActivos = new ArrayList<>();
+        
+         partidosActivos = obtenerPartidosActivos(partidos);
+         model.addAttribute("partidos", partidosActivos);
          
          apuestas.forEach(a -> System.out.println("Apuesta: " + a.getIdPartido()));
          partidos.forEach(p -> System.out.println("Partido: " + p.getId_partido()));
@@ -153,8 +177,8 @@ public class ApuestaController {
         }
         
         usuario.setDinero(usuario.getDinero()- monto);
-        usuarioDAO.save(usuario);
         model.addAttribute("userlogueado", usuario);
+        usuarioDAO.save(usuario);
         
         return "apuestaCreada";
         }

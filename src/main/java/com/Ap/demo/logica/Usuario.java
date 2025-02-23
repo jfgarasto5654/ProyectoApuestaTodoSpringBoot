@@ -10,12 +10,24 @@ import java.io.Serializable;
     @Entity
 public class Usuario implements Serializable{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_usuario;
     private String usuario;
     private String contrasenia;
     private double dinero;
     private String rol;
+    
+    public Usuario() {
+    }
+
+    public Usuario(String usuario, String contrasenia, double dinero, String rol) {
+        this.usuario = usuario;
+        this.contrasenia = contrasenia;
+        this.dinero = dinero;
+        this.rol = rol;
+    }
+    
+    
 
     public int getId_usuario() {
         return id_usuario;

@@ -3,6 +3,10 @@
     
     <div th:replace="../componentes/head :: head('Página de Inicio')"></div>
     
+    <div th:if="${goodcreate}" class="goodcreate">
+            <p th:text="${goodcreate}"></p>
+    </div>
+    
     <body>
         <div th:replace="../componentes/navBar-Iniciado :: navbar"></div>
                 

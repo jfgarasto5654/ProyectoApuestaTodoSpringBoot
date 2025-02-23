@@ -10,13 +10,25 @@ import java.io.Serializable;
 @Entity
 public class Persona implements Serializable{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private int id_persona;
     private String dni;
     private String nombre;
     private String apellido;
     private int edad;
     private int fk_id_usuario;
+    
+    public Persona() {
+    }
+
+    public Persona(String dni, String nombre, String apellido, int edad, int fk_id_usuario) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.edad = edad;
+        this.fk_id_usuario = fk_id_usuario;
+    }
+    
     
 
     public String getDni() {

@@ -24,6 +24,11 @@ public class PartidoController {
 
     @Autowired
     private IPartidoDAO partidoDAO;
+    
+    public Usuario obtenerSesion (HttpSession session){
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");        
+        return usuario;
+    }
 
     @GetMapping("/ShowAgregarPartido")
     public String showagregarpartido (HttpSession session, Model model){
@@ -43,7 +48,7 @@ public class PartidoController {
     
     @GetMapping("/ShowEliminarPartido")
     public String showEliminarPartido (HttpSession session, Model model){
-        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+        Usuario usuario = obtenerSesion(session);
         model.addAttribute("userLogueado", usuario); 
         Iterable<Partido> partidos = partidoDAO.findAll();
          model.addAttribute("partidos", partidos);
@@ -68,7 +73,14 @@ public class PartidoController {
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         model.addAttribute("userLogueado", usuario);        
         Iterable<Partido> partidos = partidoDAO.findAll();
-        model.addAttribute("partidos", partidos);
+        List<Partido> partidosActivos = new ArrayList<>();
+        
+            for (Partido partidoact : partidos) {
+                if (partidoact.getActivo() == 1 && partidoact.getId_partido() > 1) {
+                    partidosActivos.add(partidoact);
+                    }
+                }
+        model.addAttribute("partidos", partidosActivos);
         return "partidosmostrar_edit";
     }
     
@@ -76,18 +88,29 @@ public class PartidoController {
     public String editarPartido(Model model, @RequestParam("local") String local,
                                  @RequestParam("visitante") String visitante,
                                  @RequestParam("fecha") String fecha, 
-                                 @RequestParam("id") int partidoId) {
+                                 @RequestParam("id") int partidoId,HttpSession session) {
         
         Partido partido = new Partido();
         partido.setLocal(local);
         partido.setVisitante(visitante);
         partido.setFecha(fecha);
-        partido.setBalance(1);
+        partido.setBalance(0);
         partido.setId_partido(partidoId);
+        partido.setActivo(1);
 
         Iterable<Partido> partidos = partidoDAO.findAll();
-        model.addAttribute("partidos", partidos);
         
+         List<Partido> partidosActivos = new ArrayList<>();
+        
+            for (Partido partidoact : partidos) {
+                if (partidoact.getActivo() == 1 && partidoact.getId_partido() > 1) {
+                    partidosActivos.add(partidoact);
+                    }
+                }
+            
+        model.addAttribute("partidos", partidosActivos);
+        Usuario usuario = obtenerSesion(session);
+        model.addAttribute("userLogueado", usuario);
         partidoDAO.save(partido);
         
         return "partidosmostrar"; // Redirige a una página donde muestres los partidos
@@ -96,7 +119,7 @@ public class PartidoController {
      @PostMapping("/agregarPartido")
     public String agregarPartido(Model model, @RequestParam("local") String local,
                                  @RequestParam("visitante") String visitante,
-                                 @RequestParam("fecha") String fecha) {
+                                 @RequestParam("fecha") String fecha, HttpSession session) {
         // Verifica que no se reciban valores nulos
         if (local == null || local.isEmpty() || visitante == null || visitante.isEmpty() || fecha == null || fecha.isEmpty()) {
             // Maneja el error si alguno de los campos está vacío
@@ -118,12 +141,13 @@ public class PartidoController {
         List<Partido> partidosActivos = new ArrayList<>();
         
             for (Partido partidoact : partidos) {
-                if (partidoact.getActivo() == 1) {
+                if (partidoact.getActivo() == 1 && partidoact.getId_partido() > 1) {
                     partidosActivos.add(partidoact);
                     }
                 }
 
-        
+        Usuario usuario = obtenerSesion(session);
+        model.addAttribute("userLogueado", usuario);
         model.addAttribute("partidos", partidosActivos);
 
         return "partidosmostrar"; // Redirige a la página de confirmación
