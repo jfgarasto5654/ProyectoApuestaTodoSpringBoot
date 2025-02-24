@@ -29,6 +29,16 @@ public class PartidoController {
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");        
         return usuario;
     }
+    
+         public List<Partido> obtenerPartidosActivos(Iterable<Partido> partidos){
+         List<Partido> partidosActivos = new ArrayList<>();
+         for (Partido partidoact : partidos) {
+                if (partidoact.getActivo() == 1 && partidoact.getId_partido() > 1) {
+                    partidosActivos.add(partidoact);
+                    }
+                }
+         return partidosActivos;
+     }
 
     @GetMapping("/ShowAgregarPartido")
     public String showagregarpartido (HttpSession session, Model model){
@@ -51,7 +61,10 @@ public class PartidoController {
         Usuario usuario = obtenerSesion(session);
         model.addAttribute("userLogueado", usuario); 
         Iterable<Partido> partidos = partidoDAO.findAll();
-         model.addAttribute("partidos", partidos);
+        List<Partido> partidosActivos = new ArrayList<>();
+        
+        partidosActivos = obtenerPartidosActivos(partidos);
+         model.addAttribute("partidos", partidosActivos);
         return "partidosmostrar_elim";
     }
     
@@ -64,7 +77,10 @@ public class PartidoController {
         partido.setActivo(0);
         partidoDAO.save(partido);
         Iterable<Partido> partidos = partidoDAO.findAll();
-         model.addAttribute("partidos", partidos);
+        List<Partido> partidosActivos = new ArrayList<>();
+        
+        partidosActivos = obtenerPartidosActivos(partidos);
+         model.addAttribute("partidos", partidosActivos);
         return "partidosmostrar";
     }
     
@@ -75,11 +91,7 @@ public class PartidoController {
         Iterable<Partido> partidos = partidoDAO.findAll();
         List<Partido> partidosActivos = new ArrayList<>();
         
-            for (Partido partidoact : partidos) {
-                if (partidoact.getActivo() == 1 && partidoact.getId_partido() > 1) {
-                    partidosActivos.add(partidoact);
-                    }
-                }
+        partidosActivos = obtenerPartidosActivos(partidos);
         model.addAttribute("partidos", partidosActivos);
         return "partidosmostrar_edit";
     }
@@ -100,13 +112,9 @@ public class PartidoController {
 
         Iterable<Partido> partidos = partidoDAO.findAll();
         
-         List<Partido> partidosActivos = new ArrayList<>();
+        List<Partido> partidosActivos = new ArrayList<>();
         
-            for (Partido partidoact : partidos) {
-                if (partidoact.getActivo() == 1 && partidoact.getId_partido() > 1) {
-                    partidosActivos.add(partidoact);
-                    }
-                }
+        partidosActivos = obtenerPartidosActivos(partidos);
             
         model.addAttribute("partidos", partidosActivos);
         Usuario usuario = obtenerSesion(session);
@@ -140,11 +148,7 @@ public class PartidoController {
         
         List<Partido> partidosActivos = new ArrayList<>();
         
-            for (Partido partidoact : partidos) {
-                if (partidoact.getActivo() == 1 && partidoact.getId_partido() > 1) {
-                    partidosActivos.add(partidoact);
-                    }
-                }
+        partidosActivos = obtenerPartidosActivos(partidos);
 
         Usuario usuario = obtenerSesion(session);
         model.addAttribute("userLogueado", usuario);
@@ -168,11 +172,8 @@ public class PartidoController {
         }*/
         
         List<Partido> partidosActivos = new ArrayList<>();
-        for (Partido partidoact : partidos) {
-                if (partidoact.getActivo() == 1) {
-                    partidosActivos.add(partidoact);
-                    }
-                }
+        
+        partidosActivos = obtenerPartidosActivos(partidos);
         
         model.addAttribute("partidos", partidosActivos);
         
