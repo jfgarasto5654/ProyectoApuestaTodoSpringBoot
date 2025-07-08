@@ -52,7 +52,7 @@ public class ResultadoController {
         return "resultados"; 
     }
     
-    @GetMapping("/ShowAñadirResultado")
+    @GetMapping("/Admin/ShowAñadirResultado")
     public String ShowAñadirResultado (HttpSession session, Model model){
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         model.addAttribute("userLogueado", usuario); 
@@ -79,15 +79,8 @@ public class ResultadoController {
         return "partidosmostrar_agregar_R";
     }
     
-    @GetMapping("/ShowResultado")
-    public String showresultado (HttpSession session, Model model){
-        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
-        model.addAttribute("userLogueado", usuario);             
-        return "agregarpartido";
-    }
-    
 
-    @GetMapping("/AgregarResultado")
+    @GetMapping("/Admin/AgregarResultado")
     public String AgregarResultado (HttpSession session, Model model, @RequestParam("id") int partidoId){
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         model.addAttribute("userLogueado", usuario);
@@ -98,7 +91,7 @@ public class ResultadoController {
         return "elegirResultado";
     }
     
-    @GetMapping("/AgregarR")
+    @GetMapping("/Admin/AgregarR")
     public String agregarResultado(
             @RequestParam("id") int idPartido, 
             @RequestParam("ganador") String ganador, 

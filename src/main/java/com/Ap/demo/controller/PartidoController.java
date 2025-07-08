@@ -40,14 +40,14 @@ public class PartidoController {
          return partidosActivos;
      }
 
-    @GetMapping("/ShowAgregarPartido")
+    @GetMapping("/Admin/ShowAgregarPartido")
     public String showagregarpartido (HttpSession session, Model model){
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         model.addAttribute("userLogueado", usuario);             
         return "agregarpartido";
     }
     
-    @GetMapping("/ShowPaginaEdicion")
+    @GetMapping("/Admin/ShowPaginaEdicion")
     public String showPaginaEdicion (HttpSession session, Model model, @RequestParam("id") int partidoId){
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         model.addAttribute("userLogueado", usuario); 
@@ -55,21 +55,25 @@ public class PartidoController {
          model.addAttribute("partido", partido);
         return "editarpartido";
     }
+
     
-    @GetMapping("/ShowEliminarPartido")
-    public String showEliminarPartido (HttpSession session, Model model){
-        Usuario usuario = obtenerSesion(session);
-        model.addAttribute("userLogueado", usuario); 
+     @GetMapping("/Admin/VistaPartidosAdmin")
+    public String partidosadmin (HttpSession session, Model model, @RequestParam("accion") String accion){
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+        model.addAttribute("userLogueado", usuario);
+ 
         Iterable<Partido> partidos = partidoDAO.findAll();
         List<Partido> partidosActivos = new ArrayList<>();
         
         partidosActivos = obtenerPartidosActivos(partidos);
          model.addAttribute("partidos", partidosActivos);
-        return "partidosmostrar_elim";
+         model.addAttribute("accion", accion);
+        return "partidosmostrarAdmin";
     }
-    
-     @GetMapping("/EliminarPartido")
-    public String eliminarPartido (HttpSession session, Model model, @RequestParam("id") int partidoId){
+    /*
+    ELIMINAR VER
+    @GetMapping("/Admin/VistaPartidosAdmin")
+    public String partidosadmin (HttpSession session, Model model, @RequestParam("id") int partidoId, @RequestParam("accion") String accion){
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         model.addAttribute("userLogueado", usuario);
  
@@ -81,22 +85,13 @@ public class PartidoController {
         
         partidosActivos = obtenerPartidosActivos(partidos);
          model.addAttribute("partidos", partidosActivos);
-        return "partidosmostrar";
+         model.addAttribute("accion", accion);
+        return "partidosmostrarAdmin";
     }
+    */
     
-    @GetMapping("/ShowListaEditar")
-    public String showListaEditar (HttpSession session, Model model){
-        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
-        model.addAttribute("userLogueado", usuario);        
-        Iterable<Partido> partidos = partidoDAO.findAll();
-        List<Partido> partidosActivos = new ArrayList<>();
-        
-        partidosActivos = obtenerPartidosActivos(partidos);
-        model.addAttribute("partidos", partidosActivos);
-        return "partidosmostrar_edit";
-    }
     
-    @PostMapping("/editarPartido")
+    @PostMapping("/Admin/editarPartido")
     public String editarPartido(Model model, @RequestParam("local") String local,
                                  @RequestParam("visitante") String visitante,
                                  @RequestParam("fecha") String fecha, 
@@ -124,7 +119,7 @@ public class PartidoController {
         return "partidosmostrar"; // Redirige a una página donde muestres los partidos
     }
     
-     @PostMapping("/agregarPartido")
+     @PostMapping("/Admin/agregarPartido")
     public String agregarPartido(Model model, @RequestParam("local") String local,
                                  @RequestParam("visitante") String visitante,
                                  @RequestParam("fecha") String fecha, HttpSession session) {

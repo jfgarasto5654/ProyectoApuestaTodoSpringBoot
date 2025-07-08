@@ -1,29 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+
     <div th:replace="../componentes/head :: head('Página de Inicio')"></div>
-    
-</head>
 <body>
-    
     <div th:replace="../componentes/navBar-Iniciado :: navbar"></div>
-
-    <div class="container mt-4">
-        <div th:if="${errorMessage}" class="error-message">
-            <p th:text="${errorMessage}"></p>
-        </div>
-
-        <h2 style="color:#ffffff">Lista de Partidos</h2>
-
-        <div class="table-container">
-            <div class="table-responsive">
-                <table class="table table-dark table-hover table-bordered">
+    
+    
+    
+                <div class="container">
+                    <div th:if="${errorMessage}" class="error-message">
+                                            <p th:text="${errorMessage}"></p>
+                                        </div>
+                    <h2 style="color: #ffffff; background-color: black; padding: 10px;">Lista de partidos</h2>
+              <div class="table-responsive">
+                  <table border="1" class="table table-striped">
                     <thead>
                         <tr>
                             <th>Local</th>
                             <th>Visitante</th>
                             <th>Fecha</th>
-                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,18 +26,26 @@
                             <td th:text="${partido.local}"></td>
                             <td th:text="${partido.visitante}"></td>
                             <td th:text="${partido.fecha}"></td>
-                            <td>
-                                <a class="btn btn-success btn-sm" th:href="@{/Apuesta(id=${partido.id_partido})}">
-                                    Apostar
-                                </a>
+                            
+                            <td th:if="${accion == 'editar'}">
+                                <a class="btn btn-success"
+                                   th:href="@{/Admin/ShowPaginaEdicion(id=${partido.id_partido}, accion='editar')}">Editar</a>
                             </td>
+                            <td th:if="${accion == 'agregar'}">
+                                <a class="btn btn-primary"
+                                   th:href="@{/Admin/ShowAgregarPartido(id=${partido.id_partido}, accion='agregar')}">Agregar</a>
+                            </td>
+                            <td th:if="${accion == 'eliminar'}">
+                                <a class="btn btn-danger"
+                                   th:href="@{/Admin/VistaPartidosAdmin(id=${partido.id_partido}, accion='eliminar')}">Eliminar</a>
+                            </td>
+
+
                         </tr>
                     </tbody>
                 </table>
+              </div>
             </div>
-        </div>
-    </div>
 </body>
 </html>
-
 

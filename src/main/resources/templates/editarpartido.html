@@ -17,7 +17,7 @@
             <div style="padding: 15px; margin-top: 85px">
             <div class="add-match-container">
                 <h1 class="add-match-title">Editar Partido</h1>
-                <form action="/editarPartido" method="POST" class="add-match-form">
+                <form action="/Admin/editarPartido" method="POST" class="add-match-form">
             <div class="form-group">
                 
                 <input type="hidden" name="id" th:value="${partido.id_partido}" />
@@ -37,5 +37,7 @@
             </div>
             </div>
         </div>
+        
+        <div th:replace="../componentes/footer :: footer"></div>
     </body>
 </html>

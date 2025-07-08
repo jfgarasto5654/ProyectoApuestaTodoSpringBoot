@@ -6,12 +6,17 @@ package com.Ap.demo.controller;
 
 
 import com.Ap.demo.DAO.IPersonaDAO;
+import com.Ap.demo.DAO.IRegistro_dineroDAO;
 import com.Ap.demo.DAO.IUsuarioDAO;
 import com.Ap.demo.logica.Usuario;
 import com.Ap.demo.logica.Usuario;
 import com.Ap.demo.DAO.IUsuarioDAO;
+import com.Ap.demo.logica.Partido;
 import com.Ap.demo.logica.Persona;
+import com.Ap.demo.logica.Registro_dinero;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +31,8 @@ public class UsuarioController {
     private IUsuarioDAO usuarioDAO;
     @Autowired
     private IPersonaDAO personaDAO;
+    @Autowired
+    private IRegistro_dineroDAO registroDDAO;
     
     @GetMapping("/")
     public String indice (HttpSession session, Model model){
@@ -59,6 +66,9 @@ public class UsuarioController {
         model.addAttribute("userLogueado", usuario);
         double dinero = usuario.getDinero();
         model.addAttribute("dinero", dinero);
+        List<Registro_dinero> registroUsuario = registroDDAO.findAllByFkIdUsuario(usuario.getId_usuario());
+        model.addAttribute("registroUsuario",registroUsuario);
+        
         return "billetera";
     }
     
@@ -92,7 +102,15 @@ public class UsuarioController {
             }
          
                 usuarioDAO.save(usuario);
-        
+                
+                Registro_dinero registroD = new Registro_dinero (monto,modificar,usuario.getId_usuario());
+                registroDDAO.save(registroD);
+                List<Registro_dinero> registroUsuario = registroDDAO.findAllByFkIdUsuario(usuario.getId_usuario());
+                model.addAttribute("registroUsuario",registroUsuario);
+                for (Registro_dinero registro : registroUsuario) {
+                  System.out.println("Monto: " + registro.getMonto());
+                 System.out.println("Tipo: " + registro.getTipo());}   
+
                 double dinero = usuario.getDinero();
                 model.addAttribute("dinero", dinero);
                 return "billetera";

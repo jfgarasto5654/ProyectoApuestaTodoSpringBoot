@@ -3,9 +3,11 @@
     <div th:replace="../componentes/head :: head('Apuesta')"></div>
     <body>
         <div th:replace="../componentes/navBar-Iniciado :: navbar"></div>
+        
+        <h1 id="bets">BETS</h1>
         <div class="row">
             <div class="col-md-12">
-                <div class="partidos-container" style="color:#ffffff">
+                <div class="partidos-container">
                     <div th:each="apuesta : ${apuestas}" class="partido-burbuja" >
                         <div class="fecha" th:text="${apuesta.monto}">Monto</div>
                         <div class="estado" th:text="${apuesta.estado}">Estado</div>
@@ -24,5 +26,6 @@
             </div>
         </div>
 
+        <div th:replace="../componentes/footer :: footer"></div>
     </body>
 </html>

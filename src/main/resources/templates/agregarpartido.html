@@ -8,7 +8,7 @@
     <div class="center-container">
     <div class="add-match-container">
         <h1 class="add-match-title">Agregar Partido</h1>
-        <form action="/agregarPartido" method="POST" class="add-match-form">
+        <form action="/Admin/agregarPartido" method="POST" class="add-match-form">
             <div class="form-group">
                 <label for="local" class="form-label">Equipo Local</label>
                 <input type="text" id="local" name="local" class="form-input" placeholder="Ingrese el equipo local" required>
@@ -26,6 +26,7 @@
     </div>
 </div>
 
+    <div th:replace="../componentes/footer :: footer"></div>
 </body>
     
 </html>

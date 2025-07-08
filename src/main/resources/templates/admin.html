@@ -8,13 +8,16 @@
             <h1 class="match-management-title">Manejo de Partidos</h1>
                 <div class="match-management-buttons">
             
-                <a class="match-button match-add-button" th:href="@{/ShowAgregarPartido}">Añadir Partido</a>
-                <a class="match-button match-edit-button" th:href="@{/ShowListaEditar}">Editar Partido</a>
-                 <a class="match-button match-delete-button" th:href="@{/ShowEliminarPartido}">Eliminar Partido</a>
-                 <a class="match-button match-add-button" th:href="@{/ShowAñadirResultado}">Añadir Resultado</a>
+                <a class="match-button match-add-button" th:href="@{/Admin/ShowAgregarPartido}">Añadir Partido</a>
+                <a class="match-button match-edit-button" th:href="@{/Admin/VistaPartidosAdmin(accion='editar')}">Editar Partido</a>
+                <a class="match-button match-delete-button" th:href="@{/Admin/VistaPartidosAdmin(accion='eliminar')}">Eliminar Partido</a>
+
+                 <a class="match-button match-add-button" th:href="@{/Admin/ShowAñadirResultado}">Añadir Resultado</a>
                 
                 </div>
          </div>  
-        </div> 
+        </div>
+        
+        <div th:replace="../componentes/footer :: footer"></div>
     </body>
 </html>

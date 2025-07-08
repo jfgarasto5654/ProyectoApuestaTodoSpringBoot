@@ -20,13 +20,13 @@
                 
             <a class="form-submit-button" 
                 style="padding: 15px;" 
-                th:href="@{/AgregarR(id=${partido.id_partido}, ganador=${'local'})}">
+                th:href="@{/Admin/AgregarR(id=${partido.id_partido}, ganador=${'local'})}">
                  Local
              </a>
 
             <a class="form-submit-button" 
                 style="padding: 15px;" 
-                th:href="@{/AgregarR(id=${partido.id_partido}, ganador=${'visitante'})}">
+                th:href="@{/Admin/AgregarR(id=${partido.id_partido}, ganador=${'visitante'})}">
                  visitante
              </a>
             
@@ -34,4 +34,6 @@
             </div>
         </div>
     </body>
+    
+    <div th:replace="../componentes/footer :: footer"></div>
 </html>

@@ -154,7 +154,7 @@ public class ApuestaController {
         int idUsuario = usuario.getId_usuario();
         Optional<Resultado> resultado = resultadoDAO.findById(idPartido);
         if(!resultado.isPresent()){
-            Apuesta apuesta = new Apuesta(monto,por, idUsuario,idPartido, 'P', 1);
+            Apuesta apuesta = new Apuesta(monto,por, idUsuario,idPartido, 'P', idPartido);
             apuestaDAO.save(apuesta);
             model.addAttribute("apuesta", apuesta);
             Partido partido = partidoDAO.findById(idPartido).orElse(null);
