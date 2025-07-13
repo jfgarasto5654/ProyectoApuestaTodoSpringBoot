@@ -25,30 +25,46 @@
                                     <form action="/crearUser" method="POST">
                                         <p>¡Hola! Bienvenido</p>
 
-                                        <div class="form-outline mb-4">
-                                            <input type="text" id="form2Example11" class="form-control" placeholder="username" name="username"/>
-                                            <label class="form-label" for="form2Example11">Usuario</label>
-                                        </div>
+                                        <input type="text"
+                                            id="form2Example11"
+                                            th:name="username"
+                                            th:value="${username}"
+                                            th:placeholder="${username != null and username != '' ? username : 'username'}"
+                                            class="form-control"/>
+                                        <label class="form-label" for="form2Example11">Usuario</label>
                                         
-                                        <div class="form-outline mb-4">
-                                            <input type="nombre" name="nombre" id="form2Example22" class="form-control" placeholder="*****"/>
-                                            <label class="form-label" for="form2Example22">Nombre</label>
-                                        </div>
                                         
-                                        <div class="form-outline mb-4">
-                                            <input type="apellido" name="apellido" id="form2Example22" class="form-control" placeholder="*****"/>
-                                            <label class="form-label" for="form2Example22">Apellido</label>
-                                        </div>
+                                        <input type="text"
+                                            id="form2Example11"
+                                            th:name="nombre"
+                                            th:value="${nombre}"
+                                            th:placeholder="${nombre != null and nombre != '' ? nombre : 'nombre'}"
+                                            class="form-control"/>
+                                        <label class="form-label" for="form2Example11">nombre</label>
                                         
-                                        <div class="form-outline mb-4">
-                                            <input type="edad" name="edad" id="form2Example22" class="form-control" placeholder="*****"/>
-                                            <label class="form-label" for="form2Example22">edad</label>
-                                        </div>
+                                        <input type="text"
+                                            id="form2Example11"
+                                            th:name="apellido"
+                                            th:value="${apellido}"
+                                            th:placeholder="${apellido != null and apellido != '' ? apellido : 'apellido'}"
+                                            class="form-control"/>
+                                        <label class="form-label" for="form2Example11">Apellido</label>
                                         
-                                        <div class="form-outline mb-4">
-                                            <input type="dni" name="dni" id="form2Example22" class="form-control" placeholder="*****"/>
-                                            <label class="form-label" for="form2Example22">dni</label>
-                                        </div>
+                                        <input type="text"
+                                            id="form2Example11"
+                                            th:name="edad"
+                                            th:value="${edad}"
+                                            th:placeholder="${edad != null and edad != '' ? edad : 'edad'}"
+                                            class="form-control"/>
+                                        <label class="form-label" for="form2Example11">Edad</label>
+                                        
+                                       <input type="text"
+                                            id="form2Example11"
+                                            th:name="dni"
+                                            th:value="${dni}"
+                                            th:placeholder="${dni != null and dni != '' ? dni : 'dni'}"
+                                            class="form-control"/>
+                                        <label class="form-label" for="form2Example11">DNI</label> 
 
                                         <div class="form-outline mb-4">
                                             <input type="password" name="password" id="form2Example22" class="form-control" placeholder="*****"/>
@@ -56,15 +72,15 @@
                                         </div>
                                         
                                         <div class="form-outline mb-4">
-                                            <input type="reppassword" name="reppassword" id="form2Example22" class="form-control" placeholder="*****"/>
+                                            <input type="password" name="reppassword" id="form2Example22" class="form-control" placeholder="*****"/>
                                             <label class="form-label" for="form2Example22">Repetir contraseña</label>
                                         </div>
 
 
                                         <div class="d-flex align-items-center justify-content-center pb-4">
-                                            <p class="mb-0 me-2">¿No tienes cuenta?</p>
                                             <button class="btn btn-success btn-block fa-lg gradient-custom-2 mb-3" type="submit">Crear Cuenta</button>
                                         </div>
+                                        
                                     </form>
                                 </div>
                             </div>
@@ -79,8 +95,8 @@
                 </div>
             </div>
         </div>
+        <div th:replace="../componentes/footer :: footer"></div>
     </section>
-    
-    <div th:replace="../componentes/footer :: footer"></div>
+   
 </body>
 </html>
