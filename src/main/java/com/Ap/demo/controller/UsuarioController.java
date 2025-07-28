@@ -168,7 +168,7 @@ public class UsuarioController {
     public String crearUser(Model m, @RequestParam String username, 
                                    @RequestParam String nombre, 
                                    @RequestParam String apellido, 
-                                   @RequestParam(required = false) Integer edad, 
+                                   @RequestParam(value = "edad", required = false) Integer edad, 
                                    @RequestParam String dni, 
                                    @RequestParam String password,
                                    @RequestParam String reppassword, HttpSession session) {
@@ -185,14 +185,15 @@ public class UsuarioController {
         return "crearUser";  // Redirige de vuelta al formulario con los datos previos
         }
         else if (edad<18){
-                m.addAttribute("errorMessage", "La edad debe ser mayor  18 años");
+                m.addAttribute("errorMessage", "La edad debe ser mayor a 18");
                 m.addAttribute("username", username);
                 m.addAttribute("nombre", nombre);
                 m.addAttribute("apellido", apellido);
                 m.addAttribute("edad", edad);
                 m.addAttribute("dni", dni);
                 return "crearUser";
-        } else if (!password.equals(reppassword)){
+        }
+        else if (!password.equals(reppassword)){
                 m.addAttribute("errorMessage", "Las contraseñas no coinciden");
                 m.addAttribute("username", username);
                 m.addAttribute("nombre", nombre);

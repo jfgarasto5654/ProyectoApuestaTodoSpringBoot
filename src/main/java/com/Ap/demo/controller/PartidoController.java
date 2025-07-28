@@ -8,22 +8,28 @@ import com.Ap.demo.DAO.IPartidoDAO;
 import com.Ap.demo.logica.Partido;
 import com.Ap.demo.logica.Partido;
 import com.Ap.demo.DAO.IPartidoDAO;
+import com.Ap.demo.DAO.IResultadoDAO;
+import com.Ap.demo.logica.Resultado;
 import com.Ap.demo.logica.Usuario;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class PartidoController {
 
     @Autowired
     private IPartidoDAO partidoDAO;
+    @Autowired
+    private IResultadoDAO resultadoDAO;
     
     public Usuario obtenerSesion (HttpSession session){
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");        
@@ -70,9 +76,8 @@ public class PartidoController {
          model.addAttribute("accion", accion);
         return "partidosmostrarAdmin";
     }
-    /*
-    ELIMINAR VER
-    @GetMapping("/Admin/VistaPartidosAdmin")
+    
+    @GetMapping("/Admin/EliminarPartido")
     public String partidosadmin (HttpSession session, Model model, @RequestParam("id") int partidoId, @RequestParam("accion") String accion){
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         model.addAttribute("userLogueado", usuario);
@@ -88,7 +93,7 @@ public class PartidoController {
          model.addAttribute("accion", accion);
         return "partidosmostrarAdmin";
     }
-    */
+    
     
     
     @PostMapping("/Admin/editarPartido")
@@ -158,19 +163,20 @@ public class PartidoController {
         model.addAttribute("userLogueado", usuario);
         
         Iterable<Partido> partidos = partidoDAO.findAll();
-        
-        /*for (Partido partido : partidos) {
-            System.out.println("Local: " + partido.getLocal());
-            System.out.println("Visitante: " + partido.getVisitante());
-            System.out.println("Fecha: " + partido.getFecha());
-            System.out.println("--------------------");
-        }*/
-        
         List<Partido> partidosActivos = new ArrayList<>();
-        
         partidosActivos = obtenerPartidosActivos(partidos);
-        
         model.addAttribute("partidos", partidosActivos);
+        
+        Iterable<Resultado> resultados = resultadoDAO.findAll();
+       
+       List<Resultado> listaResultados = new ArrayList<>();
+        resultados.forEach(listaResultados::add);
+       
+       Map<Integer, Resultado> mapaResultados = listaResultados.stream()
+        .collect(Collectors.toMap(Resultado::getIdPartido, resultado -> resultado));
+        
+        model.addAttribute("resultadosMap", mapaResultados);
+        model.addAttribute("resultados", resultados);
         
         return "partidosmostrar";
     }

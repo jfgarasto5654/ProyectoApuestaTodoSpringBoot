@@ -5,45 +5,49 @@
     
 </head>
 <body>
-    
-    <div th:replace="../componentes/navBar-Iniciado :: navbar"></div>
-
-    <div class="container mt-4">
+  <div th:replace="../componentes/navBar-Iniciado :: navbar"></div>
+  
+  <div class="container mt-4">
         <div th:if="${errorMessage}" class="error-message">
             <p th:text="${errorMessage}"></p>
         </div>
 
-        <h2 style="color:#ffffff">Lista de Partidos</h2>
+  <div class="container mt-4 mb-5">
+    <h2 class="text-center text-white mb-4" id="bets">Lista de Partidos</h2>
 
-        <div class="table-container">
-            <div class="table-responsive">
-                <table class="table table-dark table-hover table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Local</th>
-                            <th>Visitante</th>
-                            <th>Fecha</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="partido : ${partidos}">
-                            <td th:text="${partido.local}"></td>
-                            <td th:text="${partido.visitante}"></td>
-                            <td th:text="${partido.fecha}"></td>
-                            <td>
-                                <a class="btn btn-success btn-sm" th:href="@{/Apuesta(id=${partido.id_partido})}">
-                                    Apostar
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div th:each="partido : ${partidos}" class="col">
+        <div class="card h-100 shadow-sm hover-lift border-secondary">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+              <h5 class="card-title text-center">
+                <span th:text="${partido.local}"></span> vs <span th:text="${partido.visitante}"></span>
+              </h5>
+              <p class="text-muted text-center mb-2">
+                <span th:text="${partido.fecha}"></span>
+              </p>
             </div>
+            <div class="text-center">
+              <a class="btn btn-outline-success" th:href="@{/Apuesta(id=${partido.id_partido})}">
+                <i class="bi bi-cash-coin me-1"></i>Apostar
+              </a>
+            </div>
+          </div>
+          <div class="card-footer text-center bg-light">
+            <span th:if="${resultadosMap != null and #maps.containsKey(resultadosMap, partido.id_partido)}"
+                  class="fw-bold text-success"
+                  th:text="'Ganador: ' + ${resultadosMap[partido.id_partido].ganador}"></span>
+            <span th:unless="${resultadosMap != null and #maps.containsKey(resultadosMap, partido.id_partido)}"
+                  class="text-muted">Sin resultado</span>
+          </div>
         </div>
+      </div>
     </div>
-    <div th:replace="../componentes/footer :: footer"></div>
+  </div>
+
+  <div th:replace="../componentes/footer :: footer"></div>
 </body>
+
 </html>
 
 

@@ -2,27 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
     <div th:replace="../componentes/head :: head('Página de Inicio')"></div>
-<body>
+
+    <body>
+    <!-- Navbar -->
     <div th:replace="../componentes/navBar-Iniciado :: navbar"></div>
-    
-    <h1 id="bets">RESULTADOS</h1>
-    <div class="row d-flex flex-column">
-    <div class="col-12">
-        <div th:each="partido : ${partidos}" class="partido-burbuja">
-            <div th:if="${partido.id_partido > 1}">
-                <span class="equipo-local" th:text="${partido.local}"></span> vs 
-                <span class="equipo-visitante" th:text="${partido.visitante}"></span> -
-                <span class="fecha" th:text="${partido.fecha}"></span>
-                <span class="ganador"
-                    th:if="${resultadosMap[partido.id_partido] != null}"
-                    th:text="' | Ganador: ' + ${resultadosMap[partido.id_partido].ganador}">
-                </span>
-            </div>
-        </div>
-    </div>
-</div>
 
+            <div class="container my-5">
+                <h1 class="mb-4 text-center" id="bets">RESULTADOS</h1>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                  <div th:each="partido : ${partidos}" class="col">
+                    <div class="cardr h-100">
+                      <div class="card-body text-center">
+                        <h5 class="card-title" style="padding: 10px" th:text="${partido.local} + ' vs ' + ${partido.visitante}"></h5>
+                        <p class="text-muted"><small th:text="${partido.fecha}"></small></p>
+                        <p class="fw-bold" th:if="${resultadosMap[partido.id_partido]!=null}"
+                           th:text="'Ganador: '+${resultadosMap[partido.id_partido].ganador}"></p>
+                        <div class="mt-2" style="padding-top:10px">
+                          <span th:if="${resultadosMap[partido.id_partido] != null}"
+                                  th:text="${resultadosMap[partido.id_partido].ganador}">Por definir</span>
+                            <span th:unless="${resultadosMap[partido.id_partido] != null}">Por definir</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-<div th:replace="../componentes/footer :: footer"></div>
+    <!-- Footer -->
+    <div th:replace="../componentes/footer :: footer"></div>
+
+    <!-- Asegúrate de incluir los scripts de Bootstrap JS -->
+    <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
 </body>
-</html>

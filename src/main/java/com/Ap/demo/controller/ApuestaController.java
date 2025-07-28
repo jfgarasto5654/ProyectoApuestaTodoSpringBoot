@@ -16,7 +16,9 @@ import com.Ap.demo.logica.Usuario;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -78,9 +80,24 @@ public class ApuestaController {
         } else {
             model.addAttribute("errorMessage", "Partido finalizado");
             int iderror = partidoId;
-            model.addAttribute("iderror", "iderror");
+            
             Iterable<Partido> partidos = partidoDAO.findAll();
-            model.addAttribute("partidos", partidos);
+        List<Partido> partidosActivos = new ArrayList<>();
+        partidosActivos = obtenerPartidosActivos(partidos);
+        model.addAttribute("partidos", partidosActivos);
+        
+        Iterable<Resultado> resultados = resultadoDAO.findAll();
+       
+       List<Resultado> listaResultados = new ArrayList<>();
+        resultados.forEach(listaResultados::add);
+       
+       Map<Integer, Resultado> mapaResultados = listaResultados.stream()
+        .collect(Collectors.toMap(Resultado::getIdPartido, r -> r));
+        
+        model.addAttribute("resultadosMap", mapaResultados);
+        model.addAttribute("resultados", resultados);
+
+            model.addAttribute("iderror", "iderror");
             return "partidosmostrar"; 
         }
     }

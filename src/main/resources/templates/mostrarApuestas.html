@@ -2,30 +2,46 @@
 <html>
     <div th:replace="../componentes/head :: head('Apuesta')"></div>
     <body>
-        <div th:replace="../componentes/navBar-Iniciado :: navbar"></div>
-        
-        <h1 id="bets">BETS</h1>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="partidos-container">
-                    <div th:each="apuesta : ${apuestas}" class="partido-burbuja" >
-                        <div class="fecha" th:text="${apuesta.monto}">Monto</div>
-                        <div class="estado" th:text="${apuesta.estado}">Estado</div>
-                        <div class="por-quien" th:text="'Por Quién: ' + ${apuesta.por_quien}">Por Quién</div>
-                        <div class="monto" th:text="'Monto: ' + ${apuesta.monto}">Monto</div>
-                        
-                        <div th:each="partido : ${partidos}" 
-                            th:if="${apuesta.fk_id_partido} == ${partido.id_partido}">
-                           <div  th:text="'Local: ' + ${partido.local}">Equipo Local</div>
-                           <div  th:text="'Visitante: ' + ${partido.visitante}">Equipo Visitante</div>
-                           <div class="fecha-partido" th:text="'Fecha: ' + ${partido.fecha}">Fecha del Partido</div>
-                       </div>
+  <div th:replace="../componentes/navBar-Iniciado :: navbar"></div>
 
-                    </div>
-                </div>
+  <div class="container my-5">
+    <h1 class="text-center mb-4" id="bets">Tus Apuestas</h1>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div th:each="apuesta : ${apuestas}" class="col">
+        <div class="card h-100 shadow-sm hover-lift border-primary">
+          <div class="card-header bg-primary text-white">
+            Apuesta #<span th:text="${apuesta.idApuesta}">ID</span>
+          </div>
+          <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+              <p class="mb-1"><strong>Por quién:</strong> <span th:text="${apuesta.por_quien}"></span></p>
+              <p class="mb-1"><strong>Monto apostado:</strong> $<span th:text="${apuesta.monto}"></span></p>
+              <p class="mb-1"><strong>Estado:</strong> 
+                  
+                <span th:switch="${apuesta.estado}">
+                    <span th:case="'G'" class="text-success">Ganada</span>
+                    <span th:case="'N'" class="text-danger">Perdida</span>
+                    <span th:case="'P'" class="text-warning">Pendiente</span>
+                    <span th:case="*">Desconocido</span>
+                  </span>
+
+              </p>
             </div>
-        </div>
 
-        <div th:replace="../componentes/footer :: footer"></div>
-    </body>
+            <div th:each="partido : ${partidos}"
+                 th:if="${apuesta.fk_id_partido} == ${partido.id_partido}">
+              <hr/>
+              <p class="mb-1"><strong>Local:</strong> <span th:text="${partido.local}"></span></p>
+              <p class="mb-1"><strong>Visitante:</strong> <span th:text="${partido.visitante}"></span></p>
+              <p class="text-muted text-center mb-2"> <span th:text="${partido.fecha}"></span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="../componentes/footer :: footer"></div>
+</body>
+
 </html>
