@@ -83,14 +83,18 @@ body{
 .nav-link:hover{
    background-color: #D9D34F;
 }
-#bets{
-    justify-content: center;
-    text-align: center;
-    margin-top: 60px;
-    color: white;
-    margin-left: 500px;
-    margin-right: 500px;
-    font-family: 'Oswald', sans-serif;
+
+#bets {
+  /* elimina los márgenes fijos */
+  /* margin-left: 500px; margin-right: 500px; */
+
+  width: 100%;
+  max-width: 600px;       /* ajusta según ancho deseado */
+  margin: 60px auto 0;
+  color: white;
+  font-family: 'Oswald', sans-serif;
+  text-align: center;
+  /* justify-content aquí no hace nada si no es flex parent */
 }
 
 .d-block{
