@@ -13,7 +13,9 @@
         </div>
 
   <div class="container mt-4 mb-5">
-    <h2 class="text-center text-white mb-4" id="bets">Lista de Partidos</h2>
+    <h2 class="titulo-gradient text-center mb-4" id="bets">Lista de Partidos</h2>
+
+
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       <div th:each="partido : ${partidos}" class="col">
@@ -31,6 +33,19 @@
               <a class="btn btn-outline-success" th:href="@{/Apuesta(id=${partido.id_partido})}">
                 <i class="bi bi-cash-coin me-1"></i>Apostar
               </a>
+                <div class="text-center mt-2">
+
+            <a class="btn btn-outline-primary btn-sm mt-2"
+                target="_blank"
+                th:href="'https://www.google.com/search?q=' 
+                         + ${partido.local} 
+                         + '+vs+' 
+                         + ${partido.visitante} 
+                         + '+resultado+site:espn.com'">
+                 <i class="bi bi-info-circle"></i> Info
+             </a>
+
+</div>
             </div>
           </div>
           <div class="card-footer text-center bg-light">
