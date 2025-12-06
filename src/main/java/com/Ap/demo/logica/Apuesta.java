@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class Apuesta implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_apuesta")
     private int idApuesta;
     private int monto;
     private String por_quien;

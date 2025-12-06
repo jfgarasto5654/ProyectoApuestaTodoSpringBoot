@@ -1,14 +1,20 @@
 
 package com.Ap.demo.logica;
 
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import java.io.Serializable;
 
 @Entity
-public class Partido implements Serializable{
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_partido")
+
+public abstract class Partido implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_partido;
@@ -71,12 +77,8 @@ public class Partido implements Serializable{
         this.activo = activo;
     }
     
-    
+    public abstract double calcularCuotaLocal(String local, String visitante);
 
-    
-    
-    
-    
-    
-    
+    public abstract double calcularCuotaVisitante(String local, String visitante);
+     
 }

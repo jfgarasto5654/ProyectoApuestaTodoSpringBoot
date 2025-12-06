@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.Ap.demo.controller;
 
 
@@ -103,7 +100,7 @@ public class ApuestaController {
     }
      
      @GetMapping("/ApuestasUsuario")
-    public String apuestasUsuario(Model model, HttpSession session) {
+     public String apuestasUsuario(Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
      
          Iterable<Resultado> resultados = resultadoDAO.findAll();

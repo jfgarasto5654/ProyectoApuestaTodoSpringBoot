@@ -6,6 +6,7 @@ package com.Ap.demo.controller;
 
 import com.Ap.demo.DAO.IPartidoDAO;
 import com.Ap.demo.logica.Partido;
+import com.Ap.demo.logica.PartidoCuotaFija;
 import com.Ap.demo.logica.Partido;
 import com.Ap.demo.DAO.IPartidoDAO;
 import com.Ap.demo.DAO.IResultadoDAO;
@@ -102,7 +103,7 @@ public class PartidoController {
                                  @RequestParam("fecha") String fecha, 
                                  @RequestParam("id") int partidoId,HttpSession session) {
         
-        Partido partido = new Partido();
+        Partido partido = new PartidoCuotaFija();
         partido.setLocal(local);
         partido.setVisitante(visitante);
         partido.setFecha(fecha);
@@ -121,7 +122,7 @@ public class PartidoController {
         model.addAttribute("userLogueado", usuario);
         partidoDAO.save(partido);
         
-        return "partidosmostrar"; // Redirige a una página donde muestres los partidos
+        return "partidosmostrar";
     }
     
      @PostMapping("/Admin/agregarPartido")
@@ -135,12 +136,14 @@ public class PartidoController {
         }
 
         // Crear el objeto Partido y guardarlo
-        Partido partido = new Partido();
+        PartidoCuotaFija partido = new PartidoCuotaFija();
         partido.setLocal(local);
         partido.setVisitante(visitante);
         partido.setFecha(fecha);
         partido.setBalance(0);
         partido.setActivo(1);
+        partido.setCuotaLocal(partido.calcularCuotaLocal(local, visitante));
+        partido.setCuotaVisitante(partido.calcularCuotaVisitante(local, visitante));
 
         partidoDAO.save(partido);
         
