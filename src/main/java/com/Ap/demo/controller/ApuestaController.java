@@ -109,14 +109,18 @@ public class ApuestaController {
 
          for(Apuesta apuesta: apuestas){
               Optional<Resultado> resultadoe = resultadoDAO.findById(apuesta.getIdPartido());
-             
+              
              if(resultadoe.isPresent()){
                  Resultado resultado = resultadoe.get();
-              if("local".equals(resultado.getGanador()) && "local".equals(apuesta.getpor_quien()) && apuesta.getEstado() == 'P'){
+                 
+                  Optional<Partido> partidoe = partidoDAO.findById(apuesta.getIdPartido());
+              if(partidoe.isPresent()){
+                  Partido partido = partidoe.get();
+                if("local".equals(resultado.getGanador()) && "local".equals(apuesta.getpor_quien()) && apuesta.getEstado() == 'P'){
                   apuesta.setEstado('G');
                   apuesta.setFk_id_partido(apuesta.getIdPartido());
                   double dineroUser = usuario.getDinero();
-                  dineroUser = dineroUser + apuesta.getMonto()*2;
+                  dineroUser = dineroUser + apuesta.getMonto()*partido.getCuotaLocal();
                   usuario.setDinero(dineroUser);
                   usuarioDAO.save(usuario);
                   apuestaDAO.save(apuesta);
@@ -134,6 +138,7 @@ public class ApuestaController {
                   apuesta.setEstado('N');
                   apuestaDAO.save(apuesta);
               }
+               }
              }
          }
          model.addAttribute("apuestas", apuestas);

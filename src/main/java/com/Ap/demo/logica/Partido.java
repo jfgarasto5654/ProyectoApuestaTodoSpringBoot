@@ -80,5 +80,9 @@ public abstract class Partido implements Serializable{
     public abstract double calcularCuotaLocal(String local, String visitante);
 
     public abstract double calcularCuotaVisitante(String local, String visitante);
+    
+    public abstract double getCuotaLocal();
+
+    public abstract double getCuotaVisitante();
      
 }

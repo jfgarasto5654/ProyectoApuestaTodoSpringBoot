@@ -38,5 +38,17 @@ public class PartidoCuotaFija extends Partido {
         return cuotaVisitante != null ? cuotaVisitante : 2.0;
     }
 
+    @Override
+    public double getCuotaLocal() {
+        return this.cuotaLocal;
+    }
+
+    @Override
+    public double getCuotaVisitante() {
+        return this.cuotaVisitante;
+    }
+    
+    
+
 
     }
