@@ -129,7 +129,7 @@ public class ApuestaController {
                   apuesta.setEstado('G');
                   apuesta.setFk_id_partido(apuesta.getIdPartido());
                   double dineroUser = usuario.getDinero();
-                  dineroUser = dineroUser + apuesta.getMonto()*2;
+                  dineroUser = dineroUser + apuesta.getMonto()*partido.getCuotaVisitante();
                   usuario.setDinero(dineroUser);
                   usuarioDAO.save(usuario);
                   apuestaDAO.save(apuesta);
@@ -145,10 +145,7 @@ public class ApuestaController {
          model.addAttribute("userLogueado", usuario);
          Iterable<Partido> partidos = partidoDAO.findAll();
          
-         List<Partido> partidosActivos = new ArrayList<>();
-        
-         partidosActivos = obtenerPartidosActivos(partidos);
-         model.addAttribute("partidos", partidosActivos);
+         model.addAttribute("partidos", partidos);
          
          apuestas.forEach(a -> System.out.println("Apuesta: " + a.getIdPartido()));
          partidos.forEach(p -> System.out.println("Partido: " + p.getId_partido()));
@@ -160,6 +157,7 @@ public class ApuestaController {
             @RequestParam("por") String por,
             @RequestParam("idPartido") int idPartido, HttpSession session){
         
+        System.out.println("el monto de la apuesta es: " + monto);
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         if(usuario.getDinero()< monto || monto<0){
             
@@ -196,7 +194,7 @@ public class ApuestaController {
         }
         
         usuario.setDinero(usuario.getDinero()- monto);
-        model.addAttribute("userlogueado", usuario);
+        model.addAttribute("userLogueado", usuario);
         usuarioDAO.save(usuario);
         
         return "apuestaCreada";
