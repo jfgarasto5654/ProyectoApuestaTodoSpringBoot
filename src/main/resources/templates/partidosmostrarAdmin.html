@@ -29,16 +29,24 @@
                             
                             <td th:if="${accion == 'editar'}">
                                 <a class="btn btn-success"
-                                   th:href="@{/Admin/ShowPaginaEdicion(id=${partido.id_partido}, accion='editar')}">Editar</a>
+                                   th:href="@{/Admin/ShowPaginaEdicion/{id}(id=${partido.id_partido}, accion='editar')}">
+                                    Editar
+                                </a>
                             </td>
                             <td th:if="${accion == 'agregar'}">
-                                <a class="btn btn-primary"
-                                   th:href="@{/Admin/ShowAgregarPartido(id=${partido.id_partido}, accion='agregar')}">Agregar</a>
+                            <a class="btn btn-primary"
+                               th:href="@{/Admin/ShowAgregarPartido(accion='agregar')}">
+                                Agregar
+                            </a>
                             </td>
+    
                             <td th:if="${accion == 'eliminar'}">
                                 <a class="btn btn-danger"
-                                   th:href="@{/Admin/EliminarPartido(id=${partido.id_partido}, accion='eliminar')}">Eliminar</a>
+                                   th:href="@{/Admin/EliminarPartido/{id}(id=${partido.id_partido}, accion='eliminar')}">
+                                    Eliminar
+                                </a>
                             </td>
+
 
 
                         </tr>

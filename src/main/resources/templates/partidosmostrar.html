@@ -30,9 +30,11 @@
               </p>
             </div>
             <div class="text-center">
-              <a class="btn btn-outline-success" th:href="@{/Apuesta(id=${partido.id_partido})}">
-                <i class="bi bi-cash-coin me-1"></i>Apostar
-              </a>
+              <a class="btn btn-outline-success"
+                    th:href="@{/Apuesta/{id}(id=${partido.id_partido})}">
+                     <i class="bi bi-cash-coin me-1"></i>Apostar
+                 </a>
+
                 <div class="text-center mt-2">
 
             <a class="btn btn-outline-primary btn-sm mt-2"

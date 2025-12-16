@@ -119,8 +119,8 @@ public class UsuarioController {
     
     @GetMapping("/Perfil")
     public String showPerfil(HttpSession session, Model model) {
-    // Supongamos que en la sesión el usuario está guardado con el atributo "usuarioLogueado"
-    Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+
+        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
     
        if (usuario != null) {
        int id = usuario.getId_usuario();

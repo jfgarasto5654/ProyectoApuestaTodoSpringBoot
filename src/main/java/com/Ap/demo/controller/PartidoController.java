@@ -54,8 +54,8 @@ public class PartidoController {
         return "agregarpartido";
     }
     
-    @GetMapping("/Admin/ShowPaginaEdicion")
-    public String showPaginaEdicion (HttpSession session, Model model, @RequestParam("id") int partidoId){
+    @GetMapping("/Admin/ShowPaginaEdicion/{id}")
+    public String showPaginaEdicion (HttpSession session, Model model, @PathVariable("id") int partidoId,  @RequestParam String accion){
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         model.addAttribute("userLogueado", usuario); 
         Partido partido = partidoDAO.findById(partidoId).orElse(null);
@@ -78,8 +78,8 @@ public class PartidoController {
         return "partidosmostrarAdmin";
     }
     
-    @GetMapping("/Admin/EliminarPartido")
-    public String partidosadmin (HttpSession session, Model model, @RequestParam("id") int partidoId, @RequestParam("accion") String accion){
+    @GetMapping("/Admin/EliminarPartido/{id}")
+    public String partidosadmin (HttpSession session, Model model, @PathVariable("id") int partidoId,  @RequestParam String accion){
         Usuario usuario = (Usuario) session.getAttribute("userLogueado");
         model.addAttribute("userLogueado", usuario);
  
