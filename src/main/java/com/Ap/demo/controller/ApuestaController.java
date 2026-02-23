@@ -11,6 +11,9 @@ import com.Ap.demo.logica.Partido;
 import com.Ap.demo.logica.Resultado;
 import com.Ap.demo.logica.Usuario;
 import com.Ap.demo.service.ApuestaService;
+import com.Ap.demo.service.PartidoService;
+import com.Ap.demo.service.ResultadoService;
+import com.Ap.demo.service.SesionService;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,82 +28,50 @@ import org.springframework.web.bind.annotation.*;
 
 public class ApuestaController {
     
+
      @Autowired
-     private IResultadoDAO resultadoDAO;
+     private ApuestaService apuestaService;
      @Autowired
-     private IPartidoDAO partidoDAO;
+     private PartidoService partidoservice;
      @Autowired
-     private IUsuarioDAO usuarioDAO;
+     private SesionService sesionservice;
      @Autowired
-     private IApuestaDAO apuestaDAO;
-     @Autowired
-    private ApuestaService apuestaService;
+     private ResultadoService resultadoservice;
+
      
-     public Usuario obtenerSesion (HttpSession session){
-         Usuario usuario = (Usuario) session.getAttribute("userLogueado");         
-         return usuario;
-     }
      
-     public List<Partido> obtenerPartidosActivos(Iterable<Partido> partidos){
-         List<Partido> partidosActivos = new ArrayList<>();
-         for (Partido partidoact : partidos) {
-                if (partidoact.getActivo() == 1 && partidoact.getId_partido() > 1) {
-                    partidosActivos.add(partidoact);
-                    }
-                }
-         return partidosActivos;
-     }
 
      @GetMapping("/Apuesta/{id}")
-     public String mostrarApuesta(@PathVariable("id") int partidoId, Model model, HttpSession session) {
+            public String mostrarApuesta(
+                    @PathVariable("id") int partidoId,
+                    Model model,
+                    HttpSession session
+) {
 
-        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
-        model.addAttribute("userLogueado", usuario);
-        if(usuario == null){
-        model.addAttribute("errorMessage", "Inicie sesion para apostar");
-        Iterable<Partido> partidos = partidoDAO.findAll();
-        
-        List<Partido> partidosActivos = new ArrayList<>();
-        
-        partidosActivos = obtenerPartidosActivos(partidos);
-        
-        model.addAttribute("partidos", partidosActivos);
-        return "partidosmostrar"; 
-        }
-        
-        Optional<Resultado> resultado = resultadoDAO.findById(partidoId);
-        if(!resultado.isPresent()){
-         Partido partido = partidoDAO.findById(partidoId).orElse(null);
-        System.out.println("Local: " + partido.getLocal());
-            System.out.println("Visitante: " + partido.getVisitante());
-            System.out.println("Fecha: " + partido.getFecha());
-            System.out.println("--------------------");
-        model.addAttribute("partido", partido);   
-        return "apuesta"; 
-        } else {
-            model.addAttribute("errorMessage", "Partido finalizado");
-            int iderror = partidoId;
-            
-            Iterable<Partido> partidos = partidoDAO.findAll();
-        List<Partido> partidosActivos = new ArrayList<>();
-        partidosActivos = obtenerPartidosActivos(partidos);
-        model.addAttribute("partidos", partidosActivos);
-        
-        Iterable<Resultado> resultados = resultadoDAO.findAll();
-       
-       List<Resultado> listaResultados = new ArrayList<>();
-        resultados.forEach(listaResultados::add);
-       
-       Map<Integer, Resultado> mapaResultados = listaResultados.stream()
-        .collect(Collectors.toMap(Resultado::getIdPartido, r -> r));
-        
-        model.addAttribute("resultadosMap", mapaResultados);
-        model.addAttribute("resultados", resultados);
+            Usuario usuario = sesionservice.obtenerUsuario(session);
+            model.addAttribute("userLogueado", usuario);
 
-            model.addAttribute("iderror", "iderror");
-            return "partidosmostrar"; 
+            if (usuario == null) {
+                model.addAttribute("errorMessage", "Inicie sesión para apostar");
+                model.addAttribute("partidos", partidoservice.obtenerPartidosActivos(partidoservice.obtenerTodosPartidos()));
+                return "partidosmostrar";
+            }
+
+            if (resultadoservice.partidoFinalizado(partidoId)) {
+                model.addAttribute("errorMessage", "Partido finalizado");
+                model.addAttribute("partidos", partidoservice.obtenerPartidosActivos(partidoservice.obtenerTodosPartidos()));
+                model.addAttribute("resultadosMap", resultadoservice.obtenerResultadosMap());
+                model.addAttribute("resultados", resultadoservice.obtenerTodos());
+                return "partidosmostrar";
+            }
+
+            Partido partido = partidoservice.obtenerPorId(partidoId);
+            model.addAttribute("partido", partido);
+
+            return "apuesta";
         }
-    }
+
+        
      
      @GetMapping("/ApuestasUsuario")
 public String apuestasUsuario(Model model, HttpSession session) {
@@ -112,59 +83,40 @@ public String apuestasUsuario(Model model, HttpSession session) {
 
     model.addAttribute("apuestas", apuestas);
     model.addAttribute("userLogueado", usuario);
-    model.addAttribute("partidos", partidoDAO.findAll());
+    model.addAttribute("partidos", partidoservice.obtenerTodosPartidos());
 
     return "mostrarApuestas";
 }
 
     
     @PostMapping("/procesarApuesta")
-    public String procesarapuesta (Model model, @RequestParam("monto") int monto,
-            @RequestParam("por") String por,
-            @RequestParam("idPartido") int idPartido, HttpSession session){
-        
-        System.out.println("el monto de la apuesta es: " + monto);
-        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
-        if(usuario.getDinero()< monto || monto<0){
-            
-            Partido partido = partidoDAO.findById(idPartido).orElse(null);
-            model.addAttribute("userLogueado", usuario);
-            model.addAttribute("errorMessage", "Apuesta invalida, saldo insuficiente o menor a 0");
-            model.addAttribute("partido", partido);
-            return "apuesta";
-        }else{
-        
-        int idUsuario = usuario.getId_usuario();
-        Optional<Resultado> resultado = resultadoDAO.findById(idPartido);
-        if(!resultado.isPresent()){
-            Apuesta apuesta = new Apuesta(monto,por, idUsuario,idPartido, 'P', idPartido);
-            apuestaDAO.save(apuesta);
-            model.addAttribute("apuesta", apuesta);
-            Partido partido = partidoDAO.findById(idPartido).orElse(null);
-            model.addAttribute("partido", partido);
-            int premio = apuesta.getMonto()*2;
-            model.addAttribute(premio);        
-        }
-        else{
-            Apuesta apuesta = new Apuesta(monto,por, idUsuario,idPartido, 'P', idPartido);
-            apuesta.toString();
-            apuestaDAO.save(apuesta);
-            model.addAttribute("apuesta", apuesta);
-            System.out.println("el id de partido es: " + idPartido );
-            Partido partido = partidoDAO.findById(idPartido).orElse(null);
-            System.out.println(partido.toString());
-            System.out.println(apuesta.toString());
-            model.addAttribute("partido", partido);
-            int premio = apuesta.getMonto()*2;
-            model.addAttribute(premio);
-        }
-        
-        usuario.setDinero(usuario.getDinero()- monto);
-        model.addAttribute("userLogueado", usuario);
-        usuarioDAO.save(usuario);
-        
-        return "apuestaCreada";
-        }
-    }
+        public String procesarApuesta(
+                Model model,
+                @RequestParam int monto,
+                @RequestParam String por,
+                @RequestParam int idPartido,
+                HttpSession session
+        ) {
 
-}
+            Usuario usuario = sesionservice.obtenerUsuario(session);
+
+            try {
+                Apuesta apuesta =
+                        apuestaService.crearApuesta(usuario, idPartido, monto, por);
+
+                model.addAttribute("apuesta", apuesta);
+                model.addAttribute("userLogueado", usuario);
+                model.addAttribute("partido", partidoservice.obtenerPorId(idPartido));
+
+                return "apuestaCreada";
+
+            } catch (RuntimeException e) {
+                model.addAttribute("errorMessage", e.getMessage());
+                model.addAttribute("partido",
+                        partidoservice.obtenerPorId(idPartido));
+                model.addAttribute("userLogueado", usuario);
+                return "apuesta";
+            }
+        }
+
+            }

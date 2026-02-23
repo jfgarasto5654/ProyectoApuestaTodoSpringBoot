@@ -84,5 +84,7 @@ public abstract class Partido implements Serializable{
     public abstract double getCuotaLocal();
 
     public abstract double getCuotaVisitante();
+
+    public abstract double calcularGanancia(Apuesta apuesta, Resultado resultado);
      
 }

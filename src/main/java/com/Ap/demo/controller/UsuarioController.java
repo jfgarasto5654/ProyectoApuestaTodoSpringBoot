@@ -14,6 +14,10 @@ import com.Ap.demo.DAO.IUsuarioDAO;
 import com.Ap.demo.logica.Partido;
 import com.Ap.demo.logica.Persona;
 import com.Ap.demo.logica.Registro_dinero;
+import com.Ap.demo.service.BilleteraService;
+import com.Ap.demo.service.SesionService;
+import com.Ap.demo.service.UsuarioService;
+import com.Ap.demo.service.PerfilService;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,194 +32,180 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UsuarioController {
 
     @Autowired
-    private IUsuarioDAO usuarioDAO;
+    private SesionService sesionService;
+
     @Autowired
-    private IPersonaDAO personaDAO;
+    private UsuarioService usuarioService;
+
     @Autowired
-    private IRegistro_dineroDAO registroDDAO;
+    private BilleteraService billeteraService;
     
+    @Autowired
+    private PerfilService perfilService;
+    
+    
+
+    // ---------------- HOME ----------------
     @GetMapping("/")
-    public String indice (HttpSession session, Model model){
-        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
-         model.addAttribute("userLogueado", usuario);
-         
+    public String indice(HttpSession session, Model model) {
+        model.addAttribute("userLogueado", sesionService.obtenerUsuario(session));
         return "indice";
     }
     
-    @GetMapping("/loginget")
-    public String showloginpage (){
-        
+    @GetMapping("/login")
+    public String mostrarLogin() {
         return "InicioSesion";
     }
     
-    @GetMapping("/CrearUsuario")
-    public String showCrearpage (){
-        return "CrearUsuario";
-    }
-    
-    @GetMapping("/Admin")
-    public String admin (HttpSession session, Model model){
-        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
-        model.addAttribute("userLogueado", usuario);             
-        return "admin";
-    }
-    
-    @GetMapping("/Billetera")
-    public String billetera (HttpSession session, Model model){
-        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
-        model.addAttribute("userLogueado", usuario);
-        double dinero = usuario.getDinero();
-        model.addAttribute("dinero", dinero);
-        List<Registro_dinero> registroUsuario = registroDDAO.findAllByFkIdUsuario(usuario.getId_usuario());
-        model.addAttribute("registroUsuario",registroUsuario);
-        
-        return "billetera";
-    }
-    
-    @PostMapping("/Billetera")
-    public String billeteras (HttpSession session, @RequestParam("monto") Double monto,
-            @RequestParam("Modificar") String modificar,
-            Model model){
-        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
+     @GetMapping("/Admin")
+    public String mostrarAdmin(HttpSession session,
+                        Model model) {
+        Usuario usuario = sesionService.obtenerUsuario(session);
         model.addAttribute("userLogueado", usuario);
         
-        if(monto<0){
-            double dinero = usuario.getDinero();
-            model.addAttribute("dinero", dinero);
-            model.addAttribute("error", "la cantidad no puede ser menor a 0");
-            return "billetera";
-        }
-        
-                if(modificar.equals("retiro")){
-                    
-                if (monto > usuario.getDinero()){
-                        double dinero = usuario.getDinero();
-                        model.addAttribute("dinero", dinero);
-                        model.addAttribute("error", "el monto ingresado es mayor a su saldo");
-                        return "billetera";
-                } else {
-                    usuario.setDinero(usuario.getDinero() - monto);
-                }
-            }
-                else if (modificar.equals("ingreso")){
-                usuario.setDinero(usuario.getDinero() + monto);
-            }
-         
-                usuarioDAO.save(usuario);
-                
-                Registro_dinero registroD = new Registro_dinero (monto,modificar,usuario.getId_usuario());
-                registroDDAO.save(registroD);
-                List<Registro_dinero> registroUsuario = registroDDAO.findAllByFkIdUsuario(usuario.getId_usuario());
-                model.addAttribute("registroUsuario",registroUsuario);
-                for (Registro_dinero registro : registroUsuario) {
-                  System.out.println("Monto: " + registro.getMonto());
-                 System.out.println("Tipo: " + registro.getTipo());}   
-
-                double dinero = usuario.getDinero();
-                model.addAttribute("dinero", dinero);
-                return "billetera";
-        
+        return "Admin";
     }
-    
-    @GetMapping("/Perfil")
-    public String showPerfil(HttpSession session, Model model) {
 
-        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
-    
-       if (usuario != null) {
-       int id = usuario.getId_usuario();
-           System.out.println("id:" + id); 
-        // Realiza la búsqueda de la persona con el id
-        Persona persona = personaDAO.findById(id).orElse(null);
-        //persona.toString();
-        if (persona != null) {
-            model.addAttribute("persona", persona);
-             model.addAttribute("userLogueado", usuario);
-            return "perfil";
-        } else {
-            return "nada";  // Si no se encuentra la persona
-        }
-    } else {
-        return "login";  // Si el usuario no está en sesión
-     }
-    }
-    
+
+    // ---------------- LOGIN ----------------
     @PostMapping("/login")
-    public String login(Model m, @RequestParam("username") String username, @RequestParam("password") String password, HttpSession session) {
-        Usuario u = usuarioDAO.findByUsuarioAndContrasenia(username, password);
-        
-        if (u == null){
-                m.addAttribute("errorMessage", "Usuario o contraseña incorrectos.");
-                return "inicioSesion";
-        } else {
-            u.toString();
-            session.setAttribute("userLogueado", u);
-            m.addAttribute("userLogueado", u);
-            return "indice";
+    public String login(@RequestParam String username,
+                        @RequestParam String password,
+                        HttpSession session,
+                        Model model) {
+
+        Usuario usuario = usuarioService.login(username, password);
+
+        if (usuario == null) {
+            model.addAttribute("errorMessage", "Usuario o contraseña incorrectos");
+            return "inicioSesion";
         }
+
+        session.setAttribute("userLogueado", usuario);
+        model.addAttribute("userLogueado", usuario);
+        return "indice";
     }
     
     @GetMapping("/showcrear")
-     
-     public String chowcrear (HttpSession session, Model model){
-        Usuario usuario = (Usuario) session.getAttribute("userLogueado");
-        model.addAttribute("userLogueado", usuario);
-         
-        return "crearUser";
-    }
+        public String mostrarRegistro() {
+            return "crearUser";
+        }
     
     @PostMapping("/crearUser")
-    public String crearUser(Model m, @RequestParam String username, 
-                                   @RequestParam String nombre, 
-                                   @RequestParam String apellido, 
-                                   @RequestParam(value = "edad", required = false) Integer edad, 
-                                   @RequestParam String dni, 
-                                   @RequestParam String password,
-                                   @RequestParam String reppassword, HttpSession session) {
-        
-        
-        if (username.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty() ||
-        password.isEmpty() || reppassword.isEmpty()) {
-        m.addAttribute("errorMessage", "Todos los campos son obligatorios.");
-        m.addAttribute("username", username);
-        m.addAttribute("nombre", nombre);
-        m.addAttribute("apellido", apellido);
-        m.addAttribute("dni", dni);
-        m.addAttribute("edad", edad);
-        return "crearUser";  // Redirige de vuelta al formulario con los datos previos
-        }
-        else if (edad<18){
-                m.addAttribute("errorMessage", "La edad debe ser mayor a 18");
-                m.addAttribute("username", username);
-                m.addAttribute("nombre", nombre);
-                m.addAttribute("apellido", apellido);
-                m.addAttribute("edad", edad);
-                m.addAttribute("dni", dni);
-                return "crearUser";
-        }
-        else if (!password.equals(reppassword)){
-                m.addAttribute("errorMessage", "Las contraseñas no coinciden");
-                m.addAttribute("username", username);
-                m.addAttribute("nombre", nombre);
-                m.addAttribute("apellido", apellido);
-                m.addAttribute("edad", edad);
-                m.addAttribute("dni", dni);
-                return "crearUser";
-        }
-        
-        Usuario usuario = new Usuario(username, password, 0, "norol");
-        usuarioDAO.save(usuario);
-       
-        Persona persona = new Persona(dni,nombre,apellido,edad,usuarioDAO.findLastUsuarioId());
-        personaDAO.save(persona);
-        m.addAttribute("goodcreate", "cuenta creada con exito");
-        m.addAttribute("userLogueado", usuario);
-        session.setAttribute("userLogueado", usuario);
+    public String crearUser(@RequestParam String username,
+                            @RequestParam String nombre,
+                            @RequestParam String apellido,
+                            @RequestParam(required = false) Integer edad,
+                            @RequestParam String dni,
+                            @RequestParam String password,
+                            @RequestParam String reppassword,
+                            HttpSession session,
+                            Model model) {
+
+        try {
+            Usuario usuario = usuarioService.crearUsuarioCompleto(
+                    username, nombre, apellido, edad, dni, password, reppassword
+            );
+
+            session.setAttribute("userLogueado", usuario);
+            model.addAttribute("userLogueado", usuario);
+            model.addAttribute("goodcreate", "Cuenta creada con éxito");
+
             return "indice";
-        }
+
+        } catch (RuntimeException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+
+            // llenar ante error formulario
+            model.addAttribute("username", username);
+            model.addAttribute("nombre", nombre);
+            model.addAttribute("apellido", apellido);
+            model.addAttribute("dni", dni);
+            model.addAttribute("edad", edad);
+
+        return "crearUser";
+    }
+}
     
+    @GetMapping("/Perfil")
+        public String showPerfil(HttpSession session, Model model) {
+
+            Usuario usuario = sesionService.obtenerUsuario(session);
+
+            if (usuario == null) {
+                return "login";
+            }
+
+            try {
+                Persona persona = perfilService.obtenerPerfil(usuario);
+
+                model.addAttribute("persona", persona);
+                model.addAttribute("userLogueado", usuario);
+
+                return "perfil";
+
+            } catch (RuntimeException e) {
+                return "nada";
+            }
+        }
+
+
+
+    // ---------------- BILLETERA ----------------
+    @GetMapping("/Billetera")
+public String billetera(HttpSession session, Model model) {
+    // 1. Obtenemos el usuario de la sesión
+    Usuario usuarioSesion = sesionService.obtenerUsuario(session);
+    
+    // 2. REFRESCAR: En lugar de usar 'usuarioSesion' (que es viejo), 
+    // pedimos al servicio que lo busque en la DB por su ID.
+    Usuario usuarioActualizado = usuarioService.buscarPorId(usuarioSesion.getId_usuario());
+
+    // 3. Actualizamos la mochila (sesión) con la data nueva
+    session.setAttribute("userLogueado", usuarioActualizado);
+
+    // 4. Mandamos a la vista la data real
+    model.addAttribute("userLogueado", usuarioActualizado);
+    model.addAttribute("dinero", usuarioActualizado.getDinero());
+    model.addAttribute("registroUsuario", 
+        billeteraService.obtenerRegistros(usuarioActualizado.getId_usuario())
+    );
+
+    return "billetera";
+}
+
+    @PostMapping("/Billetera")
+    public String billeteraPost(HttpSession session,
+                                @RequestParam Double monto,
+                                @RequestParam String Modificar,
+                                Model model) {
+
+        Usuario usuario = sesionService.obtenerUsuario(session);
+        model.addAttribute("userLogueado", usuario);
+
+        try {
+            if (Modificar.equals("retiro")) {
+                billeteraService.retirarDinero(usuario, monto);
+            } else {
+                billeteraService.ingresarDinero(usuario, monto);
+            }
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+
+        model.addAttribute("dinero", usuario.getDinero());
+        model.addAttribute(
+            "registroUsuario",
+            billeteraService.obtenerRegistros(usuario.getId_usuario())
+        );
+
+        return "billetera";
+    }
+
+    // ---------------- LOGOUT ----------------
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate(); // Invalida la sesión actual
+        session.invalidate();
         return "indice";
-    }}
+    }
+}

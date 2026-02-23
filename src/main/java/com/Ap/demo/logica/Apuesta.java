@@ -57,6 +57,11 @@ public class Apuesta implements Serializable{
         return fk_id_resultado;
     }
 
+    public int getFkIdUsuario() {
+        return fkIdUsuario;
+    }
+
+
     public void setFk_id_resultado(int fk_id_resultado) {
         this.fk_id_resultado = fk_id_resultado;
     }

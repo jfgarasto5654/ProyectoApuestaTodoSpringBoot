@@ -27,7 +27,7 @@
         
         <!-- Si el usuario NO está logueado -->
         <li class="nav-item" th:if="${userLogueado == null}">
-            <a th:href="@{/loginget(action='login')}" class="nav-link">Iniciar Sesión</a>
+            <a th:href="@{/login(action='login')}" class="nav-link">Iniciar Sesión</a>
         </li>
         <li class="nav-item" th:if="${userLogueado == null}">
             <a th:href="@{/showcrear}" class="nav-link">Crear Usuario</a>

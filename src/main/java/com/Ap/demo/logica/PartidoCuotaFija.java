@@ -47,8 +47,21 @@ public class PartidoCuotaFija extends Partido {
     public double getCuotaVisitante() {
         return this.cuotaVisitante;
     }
-    
-    
 
+   @Override
+        public double calcularGanancia(Apuesta apuesta, Resultado resultado) {
+            double cuota = 0;
+            String eleccion = apuesta.getpor_quien().trim();
 
-    }
+            if (eleccion.equalsIgnoreCase("local")) {
+                // CAMBIO: Usar el método que valida si es null
+                cuota = calcularCuotaLocal(null, null); 
+            } else if (eleccion.equalsIgnoreCase("visitante")) {
+                // CAMBIO: Usar el método que valida si es null
+                cuota = calcularCuotaVisitante(null, null);
+            }
+
+            return apuesta.getMonto() * cuota;
+        }
+}
+ 

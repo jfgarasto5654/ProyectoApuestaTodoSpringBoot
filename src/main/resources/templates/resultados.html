@@ -11,20 +11,13 @@
                 <h1 class="mb-4 text-center" id="bets">RESULTADOS</h1>
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                   <div th:each="partido : ${partidos}" class="col">
-                    <div class="cardr h-100">
-                      <div class="card-body text-center">
-                        <h5 class="card-title" style="padding: 10px" th:text="${partido.local} + ' vs ' + ${partido.visitante}"></h5>
-                        <p class="text-muted"><small th:text="${partido.fecha}"></small></p>
-                        <p class="fw-bold" th:if="${resultadosMap[partido.id_partido]!=null}"
-                           th:text="'Ganador: '+${resultadosMap[partido.id_partido].ganador}"></p>
-                        <div class="mt-2" style="padding-top:10px">
-                          <span th:if="${resultadosMap[partido.id_partido] != null}"
-                                  th:text="${resultadosMap[partido.id_partido].ganador}">Por definir</span>
-                            <span th:unless="${resultadosMap[partido.id_partido] != null}">Por definir</span>
+                    <div class="cardr h-100" th:if="${resultadosMap[partido.id_partido] != null}">
+                        <div class="card-body text-center">
+                            <h5 class="card-title" th:text="${partido.local} + ' vs ' + ${partido.visitante}"></h5>
+                            <p class="fw-bold" th:text="'Ganador: ' + ${resultadosMap[partido.id_partido].ganador}"></p>
                         </div>
-                      </div>
                     </div>
-                  </div>
+                </div>
                 </div>
               </div>
 
