@@ -31,19 +31,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class UsuarioController {
 
-    @Autowired
-    private SesionService sesionService;
 
-    @Autowired
-    private UsuarioService usuarioService;
+private final SesionService sesionService;
+private final UsuarioService usuarioService;
+private final BilleteraService billeteraService;
+private final PerfilService perfilService;
 
-    @Autowired
-    private BilleteraService billeteraService;
-    
-    @Autowired
-    private PerfilService perfilService;
-    
-    
+
+public UsuarioController(SesionService sesionService, 
+                     UsuarioService usuarioService, 
+                     BilleteraService billeteraService, 
+                     PerfilService perfilService) {
+    this.sesionService = sesionService;
+    this.usuarioService = usuarioService;
+    this.billeteraService = billeteraService;
+    this.perfilService = perfilService;
+}
 
     // ---------------- HOME ----------------
     @GetMapping("/")
@@ -76,10 +79,6 @@ public class UsuarioController {
 
         Usuario usuario = usuarioService.login(username, password);
 
-        if (usuario == null) {
-            model.addAttribute("errorMessage", "Usuario o contraseña incorrectos");
-            return "inicioSesion";
-        }
 
         session.setAttribute("userLogueado", usuario);
         model.addAttribute("userLogueado", usuario);

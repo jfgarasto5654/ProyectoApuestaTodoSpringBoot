@@ -34,9 +34,7 @@ public class ApuestaService {
     @Autowired
     private IUsuarioDAO usuarioDAO;
 
-   // ============================================================
-    // 1. FLUJO DEL ADMINISTRADOR (El Disparador Principal)
-    // ============================================================
+
     @Transactional
     public void registrarResultadoYLiquidar(int idPartido, String ganador) {
     // 1. Validaciones
@@ -44,37 +42,35 @@ public class ApuestaService {
     validarResultadoNoExiste(idPartido);
     validarGanador(ganador);
 
-    // 2. CREAMOS LA VARIABLE 'resultado' 
-    // Asegúrate de que los parámetros del constructor (id, ganador, fk_partido) sean correctos
+
     Resultado resultado = new Resultado(idPartido, ganador, idPartido);
     resultadoDAO.save(resultado); // Se guarda en la DB
 
-    // 3. Obtenemos el partido
+
     Partido partido = partidoDAO.findById(idPartido)
             .orElseThrow(() -> new PartidoNoEncontradoException(idPartido));
     partido.setActivo(0);
-    // 4. Buscamos las apuestas usando el nuevo método del DAO
+
     List<Apuesta> apuestas = apuestaDAO.buscarPorPartidoYEstado(idPartido, 'P');
 
     for (Apuesta apuesta : apuestas) {
-        // Buscamos al usuario de la apuesta
+
         Usuario usuario = usuarioDAO.findById(apuesta.getFkIdUsuario())
                 .orElseThrow(() -> new UsuarioNoAutenticadoException());
         
-        // PASAMOS LA VARIABLE 'resultado' QUE CREAMOS ARRIBA
+
         aplicarResolucion(apuesta, usuario, partido, resultado);
     }
 }
 
     @Transactional
         public List<Apuesta> procesarApuestasUsuario(Usuario usuario) {
-            // CAMBIO AQUÍ: Usar el nombre del DAO
-            // Antes: findByFkIdUsuario(...)
+
             List<Apuesta> apuestas = apuestaDAO.buscarPorUsuario(usuario.getId_usuario());
 
             for (Apuesta apuesta : apuestas) {
                 if (apuesta.getEstado() == 'P') {
-                    // Asegúrate de que getIdPartido() coincida con el nombre de tu atributo fk_id_partido
+                    
                     Optional<Resultado> resultadoOpt = resultadoDAO.findById(apuesta.getFk_id_partido());
                     Optional<Partido> partidoOpt = partidoDAO.findById(apuesta.getFk_id_partido());
 
@@ -86,24 +82,22 @@ public class ApuestaService {
             return apuestas;
         }
 
-    // ============================================================
-    // 3. MOTOR DE RESOLUCIÓN (Polimorfismo Puro)
-    // ============================================================
+
     private void aplicarResolucion(Apuesta apuesta, Usuario usuario, Partido partido, Resultado resultado) {
     if (resultado.getGanador().trim().equalsIgnoreCase(apuesta.getpor_quien().trim())) {
         apuesta.setEstado('G');
         
-        // 1. Calculamos ganancia
+
         double ganancia = partido.calcularGanancia(apuesta, resultado);
         
-        // Debug: Mira esto en tu consola de IntelliJ/Eclipse
+
         System.out.println("DEBUG -> Ganancia calculada: " + ganancia);
         System.out.println("DEBUG -> Saldo anterior: " + usuario.getDinero());
 
-        // 2. Sumamos y guardamos al usuario PRIMERO
+
         usuario.setDinero(usuario.getDinero() + ganancia);
         
-        // Usamos saveAndFlush para obligar a la DB a escribir el cambio de dinero YA
+
         usuarioDAO.save(usuario);
         
         System.out.println("DEBUG -> Nuevo saldo en memoria: " + usuario.getDinero());
@@ -113,9 +107,7 @@ public class ApuestaService {
     apuestaDAO.save(apuesta);
 }
 
-    // ============================================================
-    // 4. CREACIÓN Y VALIDACIONES
-    // ============================================================
+
     @Transactional
     public Apuesta crearApuesta(Usuario usuario, int idPartido, int monto, String por) {
         validarTodo(usuario, monto, idPartido);
@@ -135,13 +127,12 @@ public class ApuestaService {
         if (resultadoDAO.existsById(idPartido)) throw new PartidoFinalizadoException();
     }
     
-    // ======================
+ // ======================
 // VALIDACIONES DE ADMIN
 // ======================
 
 private void validarPartidoExiste(int idPartido) {
     if (!partidoDAO.existsById(idPartido)) {
-        // Asumiendo que tienes esta excepción creada
         throw new PartidoNoEncontradoException(idPartido); 
     }
 }
@@ -149,7 +140,7 @@ private void validarPartidoExiste(int idPartido) {
 private void validarResultadoNoExiste(int idPartido) {
     if (resultadoDAO.existsById(idPartido)) {
         // Si el resultado ya existe, no deberíamos permitir cargarlo de nuevo
-        throw new PartidoFinalizadoException(); // O una específica: ResultadoYaCargadoException
+        throw new PartidoFinalizadoException();
     }
 }
 
@@ -160,7 +151,7 @@ private void validarGanador(String ganador) {
         !ganador.equalsIgnoreCase("visitante") && 
         !ganador.equalsIgnoreCase("empate"))) {
         
-        throw new MontoInvalidoException(); // O una nueva: FormatoGanadorInvalidoException
+        throw new MontoInvalidoException();
     }
 }
 }

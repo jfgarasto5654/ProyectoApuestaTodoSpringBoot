@@ -88,5 +88,5 @@ public class ResultadoService {
     // Usamos el DAO aquí adentro
     // .orElse(null) hace que si no lo encuentra, devuelva null en lugar de un Optional vacío
     return partidoDAO.findById(id).orElse(null);
-}
+    }
 }

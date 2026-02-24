@@ -1,5 +1,6 @@
 package com.Ap.demo.controller;
 
+import com.Ap.demo.exception.LoginException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -42,4 +43,14 @@ public class GlobalExceptionHandler {
 
        return "redirect:/Billetera"; 
     }
+    
+    @ExceptionHandler(LoginException.class)
+        public String handleLoginException(LoginException ex, Model model) {
+            
+            model.addAttribute("errorMessage", ex.getMessage());
+
+            return "inicioSesion"; 
+        }
+         
 }
+

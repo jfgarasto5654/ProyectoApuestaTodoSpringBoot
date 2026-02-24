@@ -29,17 +29,27 @@ import org.springframework.web.bind.annotation.*;
 public class ApuestaController {
     
 
-     @Autowired
+
      private ApuestaService apuestaService;
-     @Autowired
+
      private PartidoService partidoservice;
-     @Autowired
+
      private SesionService sesionservice;
-     @Autowired
+
      private ResultadoService resultadoservice;
 
      
-     
+
+
+public ApuestaController (ApuestaService apuestaService, 
+                           PartidoService partidoservice, 
+                           SesionService sesionservice, 
+                           ResultadoService resultadoservice) {
+    this.apuestaService = apuestaService;
+    this.partidoservice = partidoservice;
+    this.resultadoservice = resultadoservice;
+    this.sesionservice = sesionservice;
+}
 
      @GetMapping("/Apuesta/{id}")
             public String mostrarApuesta(
@@ -74,7 +84,7 @@ public class ApuestaController {
         
      
      @GetMapping("/ApuestasUsuario")
-public String apuestasUsuario(Model model, HttpSession session) {
+    public String apuestasUsuario(Model model, HttpSession session) {
 
     Usuario usuario = (Usuario) session.getAttribute("userLogueado");
 

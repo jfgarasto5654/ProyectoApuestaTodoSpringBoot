@@ -29,7 +29,8 @@ import java.util.stream.Collectors;
 
 @Controller
 public class PartidoController {
-
+    
+    
     private final PartidoService partidoService;
     private final ResultadoService resultadoService;
     private final SesionService sesionService;

@@ -6,6 +6,7 @@ import com.Ap.demo.exception.CamposObligatoriosException;
 import com.Ap.demo.exception.EdadInvalidaException;
 import com.Ap.demo.exception.PasswordNoCoincideException;
 import com.Ap.demo.exception.PersonaNoEncontradaException;
+import com.Ap.demo.exception.LoginException;
 import com.Ap.demo.exception.UsuarioYaExisteException;
 import com.Ap.demo.logica.Persona;
 import com.Ap.demo.logica.Usuario;
@@ -22,7 +23,14 @@ public class UsuarioService {
     private IPersonaDAO personaDAO;
 
     public Usuario login(String username, String password) {
-        return usuarioDAO.findByUsuarioAndContrasenia(username, password);
+        return validarUsuario(usuarioDAO.findByUsuarioAndContrasenia(username, password));
+    }
+    
+    public Usuario validarUsuario (Usuario usuario){
+        if (usuario == null) {
+          throw new LoginException();  
+            }
+        else return usuario;
     }
 
     public Usuario crearUsuarioCompleto(
@@ -99,5 +107,5 @@ public class UsuarioService {
     public Usuario buscarPorId(int id) {
     // Aquí es donde el Service usa el DAO
     return usuarioDAO.findById(id).orElse(null);
-}
+    }
 }

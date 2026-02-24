@@ -12,7 +12,10 @@
         
         <div class="futbol-banner futbol-overlay">
                 <img src="img/futbol-banner.jpg" alt="Banner fútbol">
-                <h1 class="futbol-text">Apostá como un profesional</h1>
+                <div th:if="${session.userLogueado != null}" class="futbol-text">
+                                <h1>¡Hola de nuevo, <span th:text="${session.userLogueado.usuario}"></span>!</h1>
+                                <p>Qué bueno verte por aquí.</p>
+                            </div>
             </div>
  
         

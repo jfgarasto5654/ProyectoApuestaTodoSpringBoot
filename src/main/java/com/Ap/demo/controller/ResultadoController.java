@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ResultadoController {
-
+    
+    
     private final ResultadoService resultadoService;
     private final SesionService sesionService;
     private final ApuestaService apuestaService;
@@ -31,11 +32,10 @@ public class ResultadoController {
 public String resultados(Model model, HttpSession session) {
     model.addAttribute("userLogueado", sesionService.obtenerUsuario(session));
 
-    // 1. Mandamos el mapa como siempre
+
     model.addAttribute("resultadosMap", resultadoService.obtenerResultadosMap());
 
-    // 2. CAMBIO: Mandamos TODOS los partidos (o solo los de estado 0) 
-    // para que la vista pueda mostrar los que ya terminaron
+
     model.addAttribute("partidos", partidoService.obtenerTodosPartidos()); 
 
     return "resultados";
@@ -73,11 +73,10 @@ public String agregarResultado(@RequestParam int id,
 
     model.addAttribute("userLogueado", sesionService.obtenerUsuario(session));
 
-    // 1. Mandamos el mapa como siempre
+
     model.addAttribute("resultadosMap", resultadoService.obtenerResultadosMap());
 
-    // 2. CAMBIO: Mandamos TODOS los partidos (o solo los de estado 0) 
-    // para que la vista pueda mostrar los que ya terminaron
+
     model.addAttribute("partidos", partidoService.obtenerTodosPartidos()); 
 
     return "resultados";
