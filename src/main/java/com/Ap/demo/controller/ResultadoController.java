@@ -72,7 +72,13 @@ public String agregarResultado(@RequestParam int id,
     apuestaService.registrarResultadoYLiquidar(id, ganador);
 
     model.addAttribute("userLogueado", sesionService.obtenerUsuario(session));
+
+    // 1. Mandamos el mapa como siempre
     model.addAttribute("resultadosMap", resultadoService.obtenerResultadosMap());
+
+    // 2. CAMBIO: Mandamos TODOS los partidos (o solo los de estado 0) 
+    // para que la vista pueda mostrar los que ya terminaron
+    model.addAttribute("partidos", partidoService.obtenerTodosPartidos()); 
 
     return "resultados";
 }
